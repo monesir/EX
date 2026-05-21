@@ -1,0 +1,619 @@
+/* =========================================================
+   Aldiwan Dark Mode Override Styles
+   ========================================================= */
+
+:root {
+    --brand-grad: linear-gradient(0deg, #21262d, #21262d) !important;
+    --brand-grad-hover: linear-gradient(0deg, #30363d, #30363d) !important;
+    --accent: #58a6ff !important;
+}
+
+/* --- 1. Page background & text --- */
+html, body {
+    background-color: #0d1117 !important;
+    color: #c9d1d9 !important;
+    background-image: none !important;
+}
+
+/* --- 2. Remove ALL text-shadow sitewide (prevents ghost artifacts) --- */
+* {
+    text-shadow: none !important;
+}
+
+/* --- 3. Headings --- */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6,
+.h3-i {
+    color: #e6edf3 !important;
+}
+
+/* --- 4. Body text helpers --- */
+.black-color, .white-color, .main-color, .main-color-2,
+.text-dark, .gray-color, .light-gray-color,
+p, span, label, td, th, li, div {
+    color: #c9d1d9 !important;
+}
+
+/* --- 5. Links — just change color, NO backgrounds or borders --- */
+html body a,
+html body a:link,
+html body .m-section-1 a,
+html body .m-section-1 .s-menu a,
+html body .m-section-1 .s-menu .content a,
+html body .m-section-1 .s-menu1 a,
+html body .m-section-1 .s-menu1 .content a,
+html body .s-menu a,
+html body .s-menu1 a,
+html body .content a {
+    color: #58a6ff !important;
+    background-color: transparent !important;
+    background-image: none !important;
+}
+html body a:visited,
+html body .m-section-1 a:visited,
+html body .s-menu a:visited,
+html body .s-menu1 a:visited,
+html body .content a:visited {
+    color: #8b949e !important;
+    background-color: transparent !important;
+    background-image: none !important;
+}
+html body a:hover,
+html body .m-section-1 a:hover,
+html body .s-menu a:hover,
+html body .s-menu1 a:hover,
+html body .content a:hover {
+    color: #79c0ff !important;
+}
+
+/* Links inside the brown gradient bar (.m-section-2) stay white */
+.m-section-2 a, .m-section-2 a:visited {
+    color: #fff !important;
+}
+.m-section-2 a:hover {
+    color: #79c0ff !important;
+}
+
+/* Links inside nav/footer stay white */
+nav a, nav a:visited,
+.footer a, .footer a:visited,
+footer a, footer a:visited {
+    color: #c9d1d9 !important;
+}
+nav a:hover, .footer a:hover, footer a:hover {
+    color: #58a6ff !important;
+}
+
+/* --- 6. Card containers --- */
+.s-menu,
+.s-menu1,
+.mosahmat_block_top,
+.poem-reader,
+.card {
+    background-color: #161b22 !important;
+    background-image: none !important;
+    border-color: #30363d !important;
+}
+
+/* --- 7. Nav, Footer, Alphabet bar (.m-section-2) --- */
+nav, .navbar, .fixed-top {
+    background: #161b22 !important;
+    background-image: none !important;
+    border-bottom-color: #30363d !important;
+}
+
+.footer, footer .footer {
+    background: #161b22 !important;
+    background-image: none !important;
+}
+
+.m-section-2 {
+    background: #161b22 !important;
+    background-image: none !important;
+    border-color: #30363d !important;
+}
+
+/* --- 8. Reset .s-button to plain text (removes the original site's box/gradient) --- */
+.s-button {
+    background: transparent !important;
+    background-image: none !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    width: auto !important;
+    display: inline !important;
+    border-radius: 0 !important;
+    color: #58a6ff !important;
+}
+.s-button:visited {
+    color: #8b949e !important;
+}
+.s-button:hover {
+    color: #79c0ff !important;
+    background: transparent !important;
+}
+
+/* The actual bottom-of-card navigation buttons (الشعراء, الشاعرات, etc.) */
+.s-d-button .s-button {
+    display: inline-block !important;
+    background: #21262d !important;
+    color: #c9d1d9 !important;
+    width: 98% !important;
+    padding: 12px 0 !important;
+    border-radius: 8px !important;
+    border: 1px solid #30363d !important;
+    text-align: center !important;
+}
+.s-d-button .s-button:visited {
+    color: #c9d1d9 !important;
+}
+.s-d-button .s-button:hover {
+    background: #30363d !important;
+    color: #fff !important;
+}
+
+/* --- 9. Actual UI buttons (.btn, button, submit) --- */
+html body .btn,
+html body a.btn,
+html body .btn-primary,
+html body .btn-secondary,
+html body button[type="submit"],
+html body input[type="submit"],
+html body .login-btn,
+html body .button-menu a,
+html body .button-menu button,
+html body .m-section-1 .button-menu a,
+html body .m-section-1 .button-menu button,
+html body .btn-lucky a,
+html body .btn-diwan {
+    background: #21262d !important;
+    background-color: #21262d !important;
+    background-image: none !important;
+    color: #c9d1d9 !important;
+    border: 1px solid #30363d !important;
+}
+html body .btn:hover,
+html body a.btn:hover,
+html body .btn-primary:hover,
+html body button[type="submit"]:hover,
+html body .login-btn:hover,
+html body .button-menu a:hover,
+html body .m-section-1 .button-menu a:hover,
+html body .btn-diwan:hover {
+    background: #30363d !important;
+    background-color: #30363d !important;
+    background-image: none !important;
+    color: #fff !important;
+    border-color: #8b949e !important;
+}
+
+/* --- 9.5 Home header background image --- */
+header.home-header {
+    background-image: none !important;
+    background-color: #0d1117 !important;
+}
+
+/* Adjust the home header columns to bring the menu closer to the logo */
+html body header.home-header .logo.col {
+    flex: 0 0 18% !important;
+    max-width: 18% !important;
+}
+
+html body header.home-header .col-7.col-md-8 {
+    flex: 0 0 82% !important;
+    max-width: 82% !important;
+    transform: none !important;
+}
+
+/* --- 10. Poem controls --- */
+.poem-control {
+    background: #161b22 !important;
+    color: #c9d1d9 !important;
+    border-color: #30363d !important;
+}
+.poem-control:hover {
+    background: #21262d !important;
+}
+
+/* --- 11. Gradient overrides (the site uses inline gradients) --- */
+.gradient-diwan,
+[class*="gradient"],
+.background-main {
+    background: #161b22 !important;
+    background-image: none !important;
+}
+
+/* --- 12. Search bar --- */
+html body .g-search .gsc-control-searchbox-only .gsc-input,
+html body .g-search .gsc-control-searchbox-only .gsc-input-box,
+html body .g-search .gsc-control-searchbox-only .gsc-search-button,
+html body .g-search.g-search-2 .gsc-control-searchbox-only .gsc-input,
+html body .g-search.g-search-2 .gsc-control-searchbox-only .gsc-input-box,
+html body .g-search.g-search-2 .gsc-control-searchbox-only .gsc-search-button {
+    background: #161b22 !important;
+    color: #c9d1d9 !important;
+}
+
+html body .g-search .gsc-control-searchbox-only .gsc-search-button:hover,
+html body .g-search.g-search-2 .gsc-control-searchbox-only .gsc-search-button:hover {
+    background: #21262d !important;
+}
+
+html body .g-search .gsc-search-button-v2 svg,
+html body .g-search.g-search-2 .gsc-search-button-v2 svg {
+    fill: #c9d1d9 !important;
+}
+
+html body .g-search .gsc-control-searchbox-only input.gsc-input,
+html body .g-search.g-search-2 .gsc-control-searchbox-only input.gsc-input {
+    background: #161b22 !important;
+    color: #c9d1d9 !important;
+}
+
+html body .g-search .gsc-control-searchbox-only input.gsc-input::placeholder,
+html body .g-search.g-search-2 .gsc-control-searchbox-only input.gsc-input::placeholder {
+    color: #8b949e !important;
+}
+
+html body .g-search .gsc-control-searchbox-only {
+    background: transparent !important;
+    border: 1px solid #30363d !important;
+    border-radius: 4px !important;
+}
+html body .g-search form.gsc-search-box {
+    background: transparent !important;
+}
+
+/* Google Custom Search Autocomplete Dropdown */
+html body table.gsc-completion-container {
+    background: #161b22 !important;
+    border: 1px solid #30363d !important;
+}
+html body table.gsc-completion-container td {
+    background: #161b22 !important;
+    color: #c9d1d9 !important;
+}
+html body .gsc-completion-selected td {
+    background: #21262d !important;
+}
+html body .gsc-completion-container .gsc-completion-snippet {
+    color: #c9d1d9 !important;
+}
+
+/* Legacy GCS Autocomplete Classes */
+html body .gssb_e {
+    border: 1px solid #30363d !important;
+    background: #161b22 !important;
+}
+html body .gssb_m {
+    color: #c9d1d9 !important;
+    background: #161b22 !important;
+}
+html body .gssb_i td, html body .gssb_i {
+    background: #21262d !important;
+}
+html body .gsq_a {
+    color: #c9d1d9 !important;
+}
+html body .gssb_a, html body .gssb_a td {
+    color: #8b949e !important;
+}
+html body table.gssb_c {
+    z-index: 99999 !important;
+}
+
+/* --- 13. Sidebar --- */
+#sidebar {
+    background: #161b22 !important;
+    color: #c9d1d9 !important;
+    border-color: #30363d !important;
+}
+#sidebar a {
+    color: #c9d1d9 !important;
+    border-color: #30363d !important;
+}
+#sidebar a:hover {
+    color: #58a6ff !important;
+    background: #21262d !important;
+}
+
+/* --- 14. Miscellaneous --- */
+hr {
+    border-color: #30363d !important;
+    background-color: transparent !important;
+}
+
+.list-group-item, li, ul {
+    background-color: transparent !important;
+}
+
+#poem_content {
+    background-color: transparent !important;
+}
+
+.bet-1 {
+    background: transparent !important;
+}
+
+.mosahma_highlight {
+    background-color: #21262d !important;
+    color: #e6edf3 !important;
+}
+
+.mosahmat_block, .mosahmat_item {
+    background-color: #161b22 !important;
+    border-color: #30363d !important;
+}
+
+/* Header inside cards */
+.header-center {
+    color: #c9d1d9 !important;
+}
+.header-center::before, .header-center::after {
+    background-color: #30363d !important;
+}
+
+/* Dropdown & share popover */
+.share-popover, .dropdown-menu {
+    background-color: #161b22 !important;
+    border-color: #30363d !important;
+}
+.dropdown-item {
+    color: #c9d1d9 !important;
+}
+.dropdown-item:hover {
+    background-color: #21262d !important;
+}
+
+/* Tips/tags — both .tips and .tips1 */
+.tips a,
+.tips1 a,
+html body .m-section-1 .s-menu1 .tips a,
+html body .m-section-1 .s-menu1 .tips1 a {
+    background: #21262d !important;
+    background-image: none !important;
+    color: #c9d1d9 !important;
+    border: 1px solid #30363d !important;
+}
+.tips a:hover,
+.tips1 a:hover,
+html body .m-section-1 .s-menu1 .tips a:hover,
+html body .m-section-1 .s-menu1 .tips1 a:hover {
+    background: #30363d !important;
+    color: #fff !important;
+    border-color: #8b949e !important;
+}
+
+/* sm-border-btn buttons (like تصنيف الشعراء) */
+html body .sm-border-btn,
+html body .sm-white-btn.sm-border-btn,
+html body .sm-trans-btn.sm-border-btn {
+    background: #21262d !important;
+    color: #c9d1d9 !important;
+    border: 1px solid #30363d !important;
+}
+html body .sm-border-btn:hover,
+html body .sm-white-btn.sm-border-btn:hover,
+html body .sm-trans-btn.sm-border-btn:hover {
+    background: #30363d !important;
+    color: #fff !important;
+    border-color: #8b949e !important;
+}
+
+/* Global catch: override ANY remaining brown (#bd8a6e) borders/colors */
+[style*="bd8a6e"], [style*="BD8A6E"] {
+    color: #c9d1d9 !important;
+    border-color: #30363d !important;
+}
+
+/* Icons */
+i.fa, i.fas, i.far, i.material-icons, .material-icons {
+    color: #8b949e !important;
+}
+
+/* Form inputs */
+input, textarea, select, .form-control {
+    background-color: #0d1117 !important;
+    color: #c9d1d9 !important;
+    border-color: #30363d !important;
+}
+
+/* Borders that were originally #eae6e3 or #eee */
+.bb > div {
+    border-bottom-color: #30363d !important;
+}
+
+/* The original brown scrollbar */
+::-webkit-scrollbar {
+    width: 6px !important;
+    background: #0d1117 !important;
+}
+::-webkit-scrollbar-track {
+    background: #0d1117 !important;
+    box-shadow: none !important;
+}
+::-webkit-scrollbar-thumb {
+    background: #30363d !important;
+    border-radius: 10px !important;
+    box-shadow: none !important;
+}
+
+/* Home page header image overlay */
+header.home-header {
+    background-color: #0d1117 !important;
+}
+
+/* Quote section */
+.quote-home {
+    background-color: #161b22 !important;
+}
+
+/* Pagination */
+.page-link {
+    background-color: #161b22 !important;
+    color: #58a6ff !important;
+    border-color: #30363d !important;
+}
+.page-item.active .page-link {
+    background-color: #21262d !important;
+    border-color: #58a6ff !important;
+}
+
+/* --- 15. Google Custom Search Results --- */
+
+/* Force the main wrapper to be dark so any white containers behind it are covered */
+html body .gsc-control-wrapper-cse,
+html body .gsc-control-cse,
+html body .gsc-control-cse-ar {
+    background: #0d1117 !important;
+    background-color: #0d1117 !important;
+    border: none !important;
+    padding: 1rem !important;
+}
+
+/* Strip white backgrounds from all inner elements (like tables, inner divs) */
+html body .gsc-control-wrapper-cse *,
+html body .gsc-control-cse *,
+html body .gsc-control-cse-ar * {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+/* Now style the individual result boxes */
+html body .gsc-webResult.gsc-result,
+html body .gsc-results .gsc-imageResult {
+    background: #161b22 !important;
+    background-color: #161b22 !important;
+    border: 1px solid #30363d !important;
+    border-radius: 8px !important;
+    padding: 1rem !important;
+    margin-bottom: 1rem !important;
+}
+
+html body .gsc-webResult.gsc-result:hover {
+    border-color: #8b949e !important;
+    background: #21262d !important;
+    background-color: #21262d !important;
+}
+
+/* Fix Text Colors */
+html body .gsc-control-cse .gs-spelling,
+html body .gsc-control-cse .gs-spelling a,
+html body .gsc-control-cse .gs-result .gs-title,
+html body .gsc-control-cse .gs-result .gs-title * {
+    color: #58a6ff !important;
+    text-decoration: none !important;
+}
+
+html body .gsc-control-cse .gs-result .gs-snippet {
+    color: #c9d1d9 !important;
+    line-height: 1.8 !important;
+}
+
+html body .gsc-control-cse .gs-result .gs-visibleUrl,
+html body .gsc-control-cse .gs-result .gs-visibleUrl-short {
+    color: #8b949e !important;
+}
+
+html body .gsc-result-info,
+html body .gsc-orderby-label,
+html body .gcsc-find-more-on-google-text {
+    color: #8b949e !important;
+}
+
+/* Pagination Buttons (Must come after the * rule) */
+html body .gsc-cursor-page {
+    color: #c9d1d9 !important;
+    background: #161b22 !important;
+    background-color: #161b22 !important;
+    border: 1px solid #30363d !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 4px !important;
+    margin: 0 0.2rem !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+}
+
+html body .gsc-cursor-page:hover {
+    background: #21262d !important;
+    background-color: #21262d !important;
+    color: #fff !important;
+}
+
+html body .gsc-cursor-current-page {
+    color: #fff !important;
+    background: #30363d !important;
+    background-color: #30363d !important;
+    border-color: #8b949e !important;
+}
+
+html body .gsc-modal-background-image {
+    background-color: rgba(13, 17, 23, 0.9) !important;
+}
+
+html body .gsc-results-wrapper-overlay {
+    background: #0d1117 !important;
+    background-color: #0d1117 !important;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5) !important;
+    border: 1px solid #30363d !important;
+}
+/* --- 16. Poet Profile Card & Remaining Brown Text --- */
+/* Target specific profile containers and brown text classes */
+html body .diwan-profile-scope,
+html body .diwan-profile-scope p,
+html body .diwan-profile-scope span,
+html body .diwan-profile-scope div,
+html body .diwan-profile-scope h1,
+html body .diwan-profile-scope h2,
+html body .diwan-profile-scope h3,
+html body .diwan-profile-scope h4,
+html body .diwan-profile-scope h5,
+html body .diwan-profile-scope h6,
+html body .poet-details,
+html body .poet-details p,
+html body .poet-details span,
+html body .poet-details div,
+html body .poet-details h1,
+html body .poet-details h2,
+html body .poet-details h3,
+html body .poet-details h4,
+html body .poet-details h5,
+html body .poet-details h6,
+html body .s-menu1 p,
+html body .s-menu1 span,
+html body .s-menu1 div,
+html body .s-menu1 h1,
+html body .s-menu1 h2,
+html body .s-menu1 h3,
+html body .s-menu1 h4,
+html body .s-menu1 h5,
+html body .s-menu1 h6,
+html body .main-color,
+html body .main-color-2 {
+    color: #c9d1d9 !important;
+}
+
+/* Links inside profile should remain blue, not gray */
+html body .diwan-profile-scope a,
+html body .poet-details a,
+html body .s-menu1 a,
+html body a.main-color {
+    color: #58a6ff !important;
+}
+
+/* Follow Button */
+html body .button-menu-follow a.btn,
+html body .diwan-profile-scope .button-menu-follow a.btn,
+html body .s-menu1 .button-menu-follow a.btn {
+    background: transparent !important;
+    color: #58a6ff !important;
+    border: 1px solid #58a6ff !important;
+}
+
+html body .button-menu-follow a.btn:hover,
+html body .diwan-profile-scope .button-menu-follow a.btn:hover,
+html body .s-menu1 .button-menu-follow a.btn:hover {
+    background: #58a6ff !important;
+    color: #fff !important;
+}
