@@ -24,5 +24,14 @@
       "resources": ["arabic-poetry.otf"],
       "matches": ["*://*.aldiwan.net/*"]
     }
-  ]
+  ],
+  "icons": {
+    "128": "icon.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "128": "icon.png"
+    }
+  }
 }

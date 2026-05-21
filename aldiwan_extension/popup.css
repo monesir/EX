@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
+
+body {
+    font-family: 'Tajawal', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #0f0a0a;
+    color: #e8dcc4;
+    width: 320px;
+    border: 1px solid #3d2b1f;
+}
+
+.popup-container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(180deg, #1f1412 0%, #0f0a0a 100%);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #4a3424;
+    padding-bottom: 15px;
+    width: 100%;
+    justify-content: center;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+h1 {
+    font-size: 1.3rem;
+    color: #d4af37; /* Dark gold */
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.description {
+    font-size: 0.95rem;
+    text-align: center;
+    line-height: 1.5;
+    color: #c9b79b;
+    margin-bottom: 20px;
+}
+
+.features {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    padding: 10px 15px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    border: 1px solid #2a1c18;
+}
+
+.feature-item {
+    padding: 8px 0;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.feature-item:last-child {
+    border-bottom: none;
+}
+
+.btn {
+    background: linear-gradient(135deg, #8a2a2b 0%, #5c1b1c 100%); /* Burgundy */
+    color: #fff;
+    border: 1px solid #4a1516;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-family: inherit;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btn:hover {
+    background: linear-gradient(135deg, #a33234 0%, #752223 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+}
+
+.footer {
+    margin-top: 20px;
+    font-size: 0.75rem;
+    color: #6a5744;
+    text-align: center;
+}
