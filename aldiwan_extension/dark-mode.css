@@ -867,10 +867,62 @@ html body .icon-menu a {
     transition: all 0.2s ease !important;
 }
 
-html body .store-icons-menu a:hover,
-html body .icon-menu a:hover {
+html body .diwan-profile-scope .store-icons-menu a:hover,
+html body .diwan-profile-scope .icon-menu a:hover {
     background: var(--border-main) !important;
     color: #fff !important;
+}
+
+/* User Profile Specific Cards */
+html body .diwan-profile-scope .profile-hero__card,
+html body .diwan-profile-scope .p-board,
+html body .diwan-profile-scope .fact,
+html body .diwan-profile-scope .facts-social .social-btn {
+    background-color: var(--bg-card) !important;
+    background: var(--bg-card) !important;
+    border-color: var(--border-main) !important;
+}
+
+html body .diwan-profile-scope .p-board {
+    border: 1px solid var(--border-main) !important;
+    border-radius: var(--r-xl, 20px) !important;
+    overflow: hidden !important;
+}
+
+html body .diwan-profile-scope .fact__label,
+html body .diwan-profile-scope .bio-text,
+html body .diwan-profile-scope .profile-hero__since {
+    color: var(--text-muted) !important;
+}
+
+html body .diwan-profile-scope .fact__value,
+html body .diwan-profile-scope .section-title,
+html body .diwan-profile-scope .profile-hero__title {
+    color: var(--text-main) !important;
+}
+
+html body .diwan-profile-scope .facts-social .social-btn {
+    color: var(--text-main) !important;
+}
+
+html body .diwan-profile-scope .facts-social .social-btn:hover {
+    background-color: var(--border-main) !important;
+    background: var(--border-main) !important;
+    color: #fff !important;
+}
+
+html body .diwan-profile-scope .p-tabs-nav {
+    border-bottom: 1px solid var(--border-main) !important;
+}
+
+html body .diwan-profile-scope .p-tab-link {
+    color: var(--text-muted) !important;
+}
+
+html body .diwan-profile-scope .p-tab-link.active,
+html body .diwan-profile-scope .p-tab-link:hover {
+    color: var(--accent-main) !important;
+    border-bottom-color: var(--accent-main) !important;
 }
 
 /* ================= THEME DROPDOWN ================= */
