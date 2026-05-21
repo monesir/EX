@@ -652,6 +652,200 @@ html body a.main-color {
 html body .button-menu-follow a.btn,
 html body .diwan-profile-scope .button-menu-follow a.btn,
 html body .s-menu1 .button-menu-follow a.btn {
+/* Form inputs */
+input, textarea, select, .form-control {
+    background-color: var(--bg-main) !important;
+    color: var(--text-main) !important;
+    border-color: var(--border-main) !important;
+}
+
+/* Borders that were originally #eae6e3 or #eee */
+.bb > div {
+    border-bottom-color: var(--border-main) !important;
+}
+
+/* The original brown scrollbar */
+::-webkit-scrollbar {
+    width: 6px !important;
+    background: var(--bg-main) !important;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-main) !important;
+    box-shadow: none !important;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--border-main) !important;
+    border-radius: 10px !important;
+    box-shadow: none !important;
+}
+
+/* Home page header image overlay */
+header.home-header {
+    background-color: var(--bg-main) !important;
+}
+
+/* Quote section */
+.quote-home {
+    background-color: var(--bg-card) !important;
+}
+
+/* Pagination */
+.page-link {
+    background-color: var(--bg-card) !important;
+    color: var(--accent-main) !important;
+    border-color: var(--border-main) !important;
+}
+.page-item.active .page-link {
+    background-color: var(--bg-hover) !important;
+    border-color: var(--accent-main) !important;
+}
+
+/* --- 15. Google Custom Search Results --- */
+
+/* Force the main wrapper to be dark so any white containers behind it are covered */
+html body .gsc-control-wrapper-cse,
+html body .gsc-control-cse,
+html body .gsc-control-cse-ar {
+    background: var(--bg-main) !important;
+    background-color: var(--bg-main) !important;
+    border: none !important;
+    padding: 1rem !important;
+}
+
+/* Strip white backgrounds from all inner elements (like tables, inner divs) */
+html body .gsc-control-wrapper-cse *,
+html body .gsc-control-cse *,
+html body .gsc-control-cse-ar * {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+/* Now style the individual result boxes */
+html body .gsc-webResult.gsc-result,
+html body .gsc-results .gsc-imageResult {
+    background: var(--bg-card) !important;
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-main) !important;
+    border-radius: 8px !important;
+    padding: 1rem !important;
+    margin-bottom: 1rem !important;
+}
+
+html body .gsc-webResult.gsc-result:hover {
+    border-color: var(--text-muted) !important;
+    background: var(--bg-hover) !important;
+    background-color: var(--bg-hover) !important;
+}
+
+/* Fix Text Colors */
+html body .gsc-control-cse .gs-spelling,
+html body .gsc-control-cse .gs-spelling a,
+html body .gsc-control-cse .gs-result .gs-title,
+html body .gsc-control-cse .gs-result .gs-title * {
+    color: var(--accent-main) !important;
+    text-decoration: none !important;
+}
+
+html body .gsc-control-cse .gs-result .gs-snippet {
+    color: var(--text-main) !important;
+    line-height: 1.8 !important;
+}
+
+html body .gsc-control-cse .gs-result .gs-visibleUrl,
+html body .gsc-control-cse .gs-result .gs-visibleUrl-short {
+    color: var(--text-muted) !important;
+}
+
+html body .gsc-result-info,
+html body .gsc-orderby-label,
+html body .gcsc-find-more-on-google-text {
+    color: var(--text-muted) !important;
+}
+
+/* Pagination Buttons (Must come after the * rule) */
+html body .gsc-cursor-page {
+    color: var(--text-main) !important;
+    background: var(--bg-card) !important;
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-main) !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 4px !important;
+    margin: 0 0.2rem !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+}
+
+html body .gsc-cursor-page:hover {
+    background: var(--bg-hover) !important;
+    background-color: var(--bg-hover) !important;
+    color: #fff !important;
+}
+
+html body .gsc-cursor-current-page {
+    color: #fff !important;
+    background: var(--border-main) !important;
+    background-color: var(--border-main) !important;
+    border-color: var(--text-muted) !important;
+}
+
+html body .gsc-modal-background-image {
+    background-color: rgba(13, 17, 23, 0.9) !important;
+}
+
+html body .gsc-results-wrapper-overlay {
+    background: var(--bg-main) !important;
+    background-color: var(--bg-main) !important;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5) !important;
+    border: 1px solid var(--border-main) !important;
+}
+/* --- 16. Poet Profile Card & Remaining Brown Text --- */
+/* Target specific profile containers and brown text classes */
+html body .diwan-profile-scope,
+html body .diwan-profile-scope p,
+html body .diwan-profile-scope span,
+html body .diwan-profile-scope div,
+html body .diwan-profile-scope h1,
+html body .diwan-profile-scope h2,
+html body .diwan-profile-scope h3,
+html body .diwan-profile-scope h4,
+html body .diwan-profile-scope h5,
+html body .diwan-profile-scope h6,
+html body .poet-details,
+html body .poet-details p,
+html body .poet-details span,
+html body .poet-details div,
+html body .poet-details h1,
+html body .poet-details h2,
+html body .poet-details h3,
+html body .poet-details h4,
+html body .poet-details h5,
+html body .poet-details h6,
+html body .s-menu1 p,
+html body .s-menu1 span,
+html body .s-menu1 div,
+html body .s-menu1 h1,
+html body .s-menu1 h2,
+html body .s-menu1 h3,
+html body .s-menu1 h4,
+html body .s-menu1 h5,
+html body .s-menu1 h6,
+html body .main-color,
+html body .main-color-2 {
+    color: var(--text-main) !important;
+}
+
+/* Links inside profile should remain blue, not gray */
+html body .diwan-profile-scope a,
+html body .poet-details a,
+html body .s-menu1 a,
+html body a.main-color {
+    color: var(--accent-main) !important;
+}
+
+/* Follow Button */
+html body .button-menu-follow a.btn,
+html body .diwan-profile-scope .button-menu-follow a.btn,
+html body .s-menu1 .button-menu-follow a.btn {
     background: transparent !important;
     color: var(--accent-main) !important;
     border: 1px solid var(--accent-main) !important;
@@ -661,6 +855,21 @@ html body .button-menu-follow a.btn:hover,
 html body .diwan-profile-scope .button-menu-follow a.btn:hover,
 html body .s-menu1 .button-menu-follow a.btn:hover {
     background: var(--accent-main) !important;
+    color: #fff !important;
+}
+
+/* Footer store icons and social media icons */
+html body .store-icons-menu a,
+html body .icon-menu a {
+    background: var(--bg-hover) !important;
+    border: 1px solid var(--border-main) !important;
+    color: var(--text-main) !important;
+    transition: all 0.2s ease !important;
+}
+
+html body .store-icons-menu a:hover,
+html body .icon-menu a:hover {
+    background: var(--border-main) !important;
     color: #fff !important;
 }
 
