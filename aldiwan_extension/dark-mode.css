@@ -1,0 +1,755 @@
+/* =========================================================
+   Aldiwan Dark Mode Override Styles
+   ========================================================= */
+
+
+:root {
+    --bg-main: #0d1117;
+    --bg-card: #161b22;
+    --bg-hover: #21262d;
+    --border-main: #30363d;
+    --text-main: #c9d1d9;
+    --text-muted: #8b949e;
+    --text-heading: #e6edf3;
+    --accent-main: #58a6ff;
+    --accent-hover: #79c0ff;
+    
+    --brand-grad: linear-gradient(0deg, var(--bg-hover), var(--bg-hover)) !important;
+    --brand-grad-hover: linear-gradient(0deg, var(--border-main), var(--border-main)) !important;
+}
+
+/* ================= THEMES ================= */
+
+/* 1. GitHub Dark (Default) */
+[data-theme="dark"] {
+    /* Same as root */
+}
+
+/* 2. Navy Blue (Deep Blue) */
+[data-theme="navy"] {
+    --bg-main: #0a1128;
+    --bg-card: #121e3f;
+    --bg-hover: #1c2b59;
+    --border-main: #2b407a;
+    --text-main: #d1d9e6;
+    --text-muted: #94a3b8;
+    --text-heading: #f1f5f9;
+    --accent-main: #3b82f6;
+    --accent-hover: #60a5fa;
+}
+
+/* 3. Warm Sepia (Coffee) */
+[data-theme="sepia"] {
+    --bg-main: #2c2520;
+    --bg-card: #3a322c;
+    --bg-hover: #4d443c;
+    --border-main: #61574d;
+    --text-main: #e8dbce;
+    --text-muted: #bdae9f;
+    --text-heading: #fdf6ec;
+    --accent-main: #d97736;
+    --accent-hover: #f39c63;
+}
+
+
+
+
+/* --- 1. Page background & text --- */
+html, body {
+    background-color: var(--bg-main) !important;
+    color: var(--text-main) !important;
+    background-image: none !important;
+}
+
+/* --- 2. Remove ALL text-shadow sitewide (prevents ghost artifacts) --- */
+* {
+    text-shadow: none !important;
+}
+
+/* --- 3. Headings --- */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6,
+.h3-i {
+    color: var(--text-heading) !important;
+}
+
+/* --- 4. Body text helpers --- */
+.black-color, .white-color, .main-color, .main-color-2,
+.text-dark, .gray-color, .light-gray-color,
+p, span, label, td, th, li, div {
+    color: var(--text-main) !important;
+}
+
+/* --- 5. Links — just change color, NO backgrounds or borders --- */
+html body a,
+html body a:link,
+html body .m-section-1 a,
+html body .m-section-1 .s-menu a,
+html body .m-section-1 .s-menu .content a,
+html body .m-section-1 .s-menu1 a,
+html body .m-section-1 .s-menu1 .content a,
+html body .s-menu a,
+html body .s-menu1 a,
+html body .content a {
+    color: var(--accent-main) !important;
+    background-color: transparent !important;
+    background-image: none !important;
+}
+html body a:visited,
+html body .m-section-1 a:visited,
+html body .s-menu a:visited,
+html body .s-menu1 a:visited,
+html body .content a:visited {
+    color: var(--text-muted) !important;
+    background-color: transparent !important;
+    background-image: none !important;
+}
+html body a:hover,
+html body .m-section-1 a:hover,
+html body .s-menu a:hover,
+html body .s-menu1 a:hover,
+html body .content a:hover {
+    color: var(--accent-hover) !important;
+}
+
+/* Links inside the brown gradient bar (.m-section-2) stay white */
+.m-section-2 a, .m-section-2 a:visited {
+    color: #fff !important;
+}
+.m-section-2 a:hover {
+    color: var(--accent-hover) !important;
+}
+
+/* Links inside nav/footer stay white */
+nav a, nav a:visited,
+.footer a, .footer a:visited,
+footer a, footer a:visited {
+    color: var(--text-main) !important;
+}
+nav a:hover, .footer a:hover, footer a:hover {
+    color: var(--accent-main) !important;
+}
+
+/* --- 6. Card containers --- */
+.s-menu,
+.s-menu1,
+.mosahmat_block_top,
+.poem-reader,
+.card {
+    background-color: var(--bg-card) !important;
+    background-image: none !important;
+    border-color: var(--border-main) !important;
+}
+
+/* --- 7. Nav, Footer, Alphabet bar (.m-section-2) --- */
+nav, .navbar, .fixed-top {
+    background: var(--bg-card) !important;
+    background-image: none !important;
+    border-bottom-color: var(--border-main) !important;
+}
+
+.footer, footer .footer {
+    background: var(--bg-card) !important;
+    background-image: none !important;
+}
+
+.m-section-2 {
+    background: var(--bg-card) !important;
+    background-image: none !important;
+    border-color: var(--border-main) !important;
+}
+
+/* --- 8. Reset .s-button to plain text (removes the original site's box/gradient) --- */
+.s-button {
+    background: transparent !important;
+    background-image: none !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    width: auto !important;
+    display: inline !important;
+    border-radius: 0 !important;
+    color: var(--accent-main) !important;
+}
+.s-button:visited {
+    color: var(--text-muted) !important;
+}
+.s-button:hover {
+    color: var(--accent-hover) !important;
+    background: transparent !important;
+}
+
+/* The actual bottom-of-card navigation buttons (الشعراء, الشاعرات, etc.) */
+.s-d-button .s-button {
+    display: inline-block !important;
+    background: var(--bg-hover) !important;
+    color: var(--text-main) !important;
+    width: 98% !important;
+    padding: 12px 0 !important;
+    border-radius: 8px !important;
+    border: 1px solid var(--border-main) !important;
+    text-align: center !important;
+}
+.s-d-button .s-button:visited {
+    color: var(--text-main) !important;
+}
+.s-d-button .s-button:hover {
+    background: var(--border-main) !important;
+    color: #fff !important;
+}
+
+/* --- 9. Actual UI buttons (.btn, button, submit) --- */
+html body .btn,
+html body a.btn,
+html body .btn-primary,
+html body .btn-secondary,
+html body button[type="submit"],
+html body input[type="submit"],
+html body .login-btn,
+html body .button-menu a,
+html body .button-menu button,
+html body .m-section-1 .button-menu a,
+html body .m-section-1 .button-menu button,
+html body .btn-lucky a,
+html body .btn-diwan {
+    background: var(--bg-hover) !important;
+    background-color: var(--bg-hover) !important;
+    background-image: none !important;
+    color: var(--text-main) !important;
+    border: 1px solid var(--border-main) !important;
+}
+html body .btn:hover,
+html body a.btn:hover,
+html body .btn-primary:hover,
+html body button[type="submit"]:hover,
+html body .login-btn:hover,
+html body .button-menu a:hover,
+html body .m-section-1 .button-menu a:hover,
+html body .btn-diwan:hover {
+    background: var(--border-main) !important;
+    background-color: var(--border-main) !important;
+    background-image: none !important;
+    color: #fff !important;
+    border-color: var(--text-muted) !important;
+}
+
+/* --- 9.5 Home header background image --- */
+header.home-header {
+    background-image: none !important;
+    background-color: var(--bg-main) !important;
+}
+
+/* Adjust the home header columns to bring the menu closer to the logo */
+html body header.home-header .logo.col {
+    flex: 0 0 18% !important;
+    max-width: 18% !important;
+}
+
+html body header.home-header .col-7.col-md-8 {
+    flex: 0 0 82% !important;
+    max-width: 82% !important;
+    transform: none !important;
+}
+
+/* --- 10. Poem controls --- */
+.poem-control {
+    background: var(--bg-card) !important;
+    color: var(--text-main) !important;
+    border-color: var(--border-main) !important;
+}
+.poem-control:hover {
+    background: var(--bg-hover) !important;
+}
+
+/* --- 11. Gradient overrides (the site uses inline gradients) --- */
+.gradient-diwan,
+[class*="gradient"],
+.background-main {
+    background: var(--bg-card) !important;
+    background-image: none !important;
+}
+
+/* --- 12. Search bar --- */
+html body .g-search .gsc-control-searchbox-only .gsc-input,
+html body .g-search .gsc-control-searchbox-only .gsc-input-box,
+html body .g-search .gsc-control-searchbox-only .gsc-search-button,
+html body .g-search.g-search-2 .gsc-control-searchbox-only .gsc-input,
+html body .g-search.g-search-2 .gsc-control-searchbox-only .gsc-input-box,
+html body .g-search.g-search-2 .gsc-control-searchbox-only .gsc-search-button {
+    background: var(--bg-card) !important;
+    color: var(--text-main) !important;
+}
+
+html body .g-search .gsc-control-searchbox-only .gsc-search-button:hover,
+html body .g-search.g-search-2 .gsc-control-searchbox-only .gsc-search-button:hover {
+    background: var(--bg-hover) !important;
+}
+
+html body .g-search .gsc-search-button-v2 svg,
+html body .g-search.g-search-2 .gsc-search-button-v2 svg {
+    fill: var(--text-main) !important;
+}
+
+html body .g-search .gsc-control-searchbox-only input.gsc-input,
+html body .g-search.g-search-2 .gsc-control-searchbox-only input.gsc-input {
+    background: var(--bg-card) !important;
+    color: var(--text-main) !important;
+}
+
+html body .g-search .gsc-control-searchbox-only input.gsc-input::placeholder,
+html body .g-search.g-search-2 .gsc-control-searchbox-only input.gsc-input::placeholder {
+    color: var(--text-muted) !important;
+}
+
+html body .g-search .gsc-control-searchbox-only {
+    background: transparent !important;
+    border: 1px solid var(--border-main) !important;
+    border-radius: 4px !important;
+}
+html body .g-search form.gsc-search-box {
+    background: transparent !important;
+}
+
+/* Google Custom Search Autocomplete Dropdown */
+html body table.gsc-completion-container {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border-main) !important;
+}
+html body table.gsc-completion-container td {
+    background: var(--bg-card) !important;
+    color: var(--text-main) !important;
+}
+html body .gsc-completion-selected td {
+    background: var(--bg-hover) !important;
+}
+html body .gsc-completion-container .gsc-completion-snippet {
+    color: var(--text-main) !important;
+}
+
+/* Legacy GCS Autocomplete Classes */
+html body .gssb_e {
+    border: 1px solid var(--border-main) !important;
+    background: var(--bg-card) !important;
+}
+html body .gssb_m {
+    color: var(--text-main) !important;
+    background: var(--bg-card) !important;
+}
+html body .gssb_i td, html body .gssb_i {
+    background: var(--bg-hover) !important;
+}
+html body .gsq_a {
+    color: var(--text-main) !important;
+}
+html body .gssb_a, html body .gssb_a td {
+    color: var(--text-muted) !important;
+}
+html body table.gssb_c {
+    z-index: 99999 !important;
+}
+
+/* --- 13. Sidebar --- */
+#sidebar {
+    background: var(--bg-card) !important;
+    color: var(--text-main) !important;
+    border-color: var(--border-main) !important;
+}
+#sidebar a {
+    color: var(--text-main) !important;
+    border-color: var(--border-main) !important;
+}
+#sidebar a:hover {
+    color: var(--accent-main) !important;
+    background: var(--bg-hover) !important;
+}
+
+/* --- 14. Miscellaneous --- */
+hr {
+    border-color: var(--border-main) !important;
+    background-color: transparent !important;
+}
+
+.list-group-item, li, ul {
+    background-color: transparent !important;
+}
+
+#poem_content {
+    background-color: transparent !important;
+}
+
+.bet-1 {
+    background: transparent !important;
+}
+
+.mosahma_highlight {
+    background-color: var(--bg-hover) !important;
+    color: var(--text-heading) !important;
+}
+
+.mosahmat_block, .mosahmat_item {
+    background-color: var(--bg-card) !important;
+    border-color: var(--border-main) !important;
+}
+
+/* Header inside cards */
+.header-center {
+    color: var(--text-main) !important;
+}
+.header-center::before, .header-center::after {
+    background-color: var(--border-main) !important;
+}
+
+/* Dropdown & share popover */
+.share-popover, .dropdown-menu {
+    background-color: var(--bg-card) !important;
+    border-color: var(--border-main) !important;
+}
+.dropdown-item {
+    color: var(--text-main) !important;
+}
+.dropdown-item:hover {
+    background-color: var(--bg-hover) !important;
+}
+
+/* Tips/tags — both .tips and .tips1 */
+.tips a,
+.tips1 a,
+html body .m-section-1 .s-menu1 .tips a,
+html body .m-section-1 .s-menu1 .tips1 a {
+    background: var(--bg-hover) !important;
+    background-image: none !important;
+    color: var(--text-main) !important;
+    border: 1px solid var(--border-main) !important;
+}
+.tips a:hover,
+.tips1 a:hover,
+html body .m-section-1 .s-menu1 .tips a:hover,
+html body .m-section-1 .s-menu1 .tips1 a:hover {
+    background: var(--border-main) !important;
+    color: #fff !important;
+    border-color: var(--text-muted) !important;
+}
+
+/* sm-border-btn buttons (like تصنيف الشعراء) */
+html body .sm-border-btn,
+html body .sm-white-btn.sm-border-btn,
+html body .sm-trans-btn.sm-border-btn {
+    background: var(--bg-hover) !important;
+    color: var(--text-main) !important;
+    border: 1px solid var(--border-main) !important;
+}
+html body .sm-border-btn:hover,
+html body .sm-white-btn.sm-border-btn:hover,
+html body .sm-trans-btn.sm-border-btn:hover {
+    background: var(--border-main) !important;
+    color: #fff !important;
+    border-color: var(--text-muted) !important;
+}
+
+/* Global catch: override ANY remaining brown (#bd8a6e) borders/colors */
+[style*="bd8a6e"], [style*="BD8A6E"] {
+    color: var(--text-main) !important;
+    border-color: var(--border-main) !important;
+}
+
+/* Icons */
+i.fa, i.fas, i.far, i.material-icons, .material-icons {
+    color: var(--text-muted) !important;
+}
+
+/* Form inputs */
+input, textarea, select, .form-control {
+    background-color: var(--bg-main) !important;
+    color: var(--text-main) !important;
+    border-color: var(--border-main) !important;
+}
+
+/* Borders that were originally #eae6e3 or #eee */
+.bb > div {
+    border-bottom-color: var(--border-main) !important;
+}
+
+/* The original brown scrollbar */
+::-webkit-scrollbar {
+    width: 6px !important;
+    background: var(--bg-main) !important;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-main) !important;
+    box-shadow: none !important;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--border-main) !important;
+    border-radius: 10px !important;
+    box-shadow: none !important;
+}
+
+/* Home page header image overlay */
+header.home-header {
+    background-color: var(--bg-main) !important;
+}
+
+/* Quote section */
+.quote-home {
+    background-color: var(--bg-card) !important;
+}
+
+/* Pagination */
+.page-link {
+    background-color: var(--bg-card) !important;
+    color: var(--accent-main) !important;
+    border-color: var(--border-main) !important;
+}
+.page-item.active .page-link {
+    background-color: var(--bg-hover) !important;
+    border-color: var(--accent-main) !important;
+}
+
+/* --- 15. Google Custom Search Results --- */
+
+/* Force the main wrapper to be dark so any white containers behind it are covered */
+html body .gsc-control-wrapper-cse,
+html body .gsc-control-cse,
+html body .gsc-control-cse-ar {
+    background: var(--bg-main) !important;
+    background-color: var(--bg-main) !important;
+    border: none !important;
+    padding: 1rem !important;
+}
+
+/* Strip white backgrounds from all inner elements (like tables, inner divs) */
+html body .gsc-control-wrapper-cse *,
+html body .gsc-control-cse *,
+html body .gsc-control-cse-ar * {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+/* Now style the individual result boxes */
+html body .gsc-webResult.gsc-result,
+html body .gsc-results .gsc-imageResult {
+    background: var(--bg-card) !important;
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-main) !important;
+    border-radius: 8px !important;
+    padding: 1rem !important;
+    margin-bottom: 1rem !important;
+}
+
+html body .gsc-webResult.gsc-result:hover {
+    border-color: var(--text-muted) !important;
+    background: var(--bg-hover) !important;
+    background-color: var(--bg-hover) !important;
+}
+
+/* Fix Text Colors */
+html body .gsc-control-cse .gs-spelling,
+html body .gsc-control-cse .gs-spelling a,
+html body .gsc-control-cse .gs-result .gs-title,
+html body .gsc-control-cse .gs-result .gs-title * {
+    color: var(--accent-main) !important;
+    text-decoration: none !important;
+}
+
+html body .gsc-control-cse .gs-result .gs-snippet {
+    color: var(--text-main) !important;
+    line-height: 1.8 !important;
+}
+
+html body .gsc-control-cse .gs-result .gs-visibleUrl,
+html body .gsc-control-cse .gs-result .gs-visibleUrl-short {
+    color: var(--text-muted) !important;
+}
+
+html body .gsc-result-info,
+html body .gsc-orderby-label,
+html body .gcsc-find-more-on-google-text {
+    color: var(--text-muted) !important;
+}
+
+/* Pagination Buttons (Must come after the * rule) */
+html body .gsc-cursor-page {
+    color: var(--text-main) !important;
+    background: var(--bg-card) !important;
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-main) !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 4px !important;
+    margin: 0 0.2rem !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+}
+
+html body .gsc-cursor-page:hover {
+    background: var(--bg-hover) !important;
+    background-color: var(--bg-hover) !important;
+    color: #fff !important;
+}
+
+html body .gsc-cursor-current-page {
+    color: #fff !important;
+    background: var(--border-main) !important;
+    background-color: var(--border-main) !important;
+    border-color: var(--text-muted) !important;
+}
+
+html body .gsc-modal-background-image {
+    background-color: rgba(13, 17, 23, 0.9) !important;
+}
+
+html body .gsc-results-wrapper-overlay {
+    background: var(--bg-main) !important;
+    background-color: var(--bg-main) !important;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5) !important;
+    border: 1px solid var(--border-main) !important;
+}
+/* --- 16. Poet Profile Card & Remaining Brown Text --- */
+/* Target specific profile containers and brown text classes */
+html body .diwan-profile-scope,
+html body .diwan-profile-scope p,
+html body .diwan-profile-scope span,
+html body .diwan-profile-scope div,
+html body .diwan-profile-scope h1,
+html body .diwan-profile-scope h2,
+html body .diwan-profile-scope h3,
+html body .diwan-profile-scope h4,
+html body .diwan-profile-scope h5,
+html body .diwan-profile-scope h6,
+html body .poet-details,
+html body .poet-details p,
+html body .poet-details span,
+html body .poet-details div,
+html body .poet-details h1,
+html body .poet-details h2,
+html body .poet-details h3,
+html body .poet-details h4,
+html body .poet-details h5,
+html body .poet-details h6,
+html body .s-menu1 p,
+html body .s-menu1 span,
+html body .s-menu1 div,
+html body .s-menu1 h1,
+html body .s-menu1 h2,
+html body .s-menu1 h3,
+html body .s-menu1 h4,
+html body .s-menu1 h5,
+html body .s-menu1 h6,
+html body .main-color,
+html body .main-color-2 {
+    color: var(--text-main) !important;
+}
+
+/* Links inside profile should remain blue, not gray */
+html body .diwan-profile-scope a,
+html body .poet-details a,
+html body .s-menu1 a,
+html body a.main-color {
+    color: var(--accent-main) !important;
+}
+
+/* Follow Button */
+html body .button-menu-follow a.btn,
+html body .diwan-profile-scope .button-menu-follow a.btn,
+html body .s-menu1 .button-menu-follow a.btn {
+    background: transparent !important;
+    color: var(--accent-main) !important;
+    border: 1px solid var(--accent-main) !important;
+}
+
+html body .button-menu-follow a.btn:hover,
+html body .diwan-profile-scope .button-menu-follow a.btn:hover,
+html body .s-menu1 .button-menu-follow a.btn:hover {
+    background: var(--accent-main) !important;
+    color: #fff !important;
+}
+
+/* ================= THEME DROPDOWN ================= */
+.theme-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border-main) !important;
+    border-radius: 8px !important;
+    padding: 8px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5) !important;
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    z-index: 99999;
+    min-width: 140px;
+}
+.theme-dropdown-menu.show {
+    display: flex;
+}
+.theme-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px !important;
+    cursor: pointer;
+    border-radius: 6px !important;
+    transition: background 0.2s ease;
+    color: var(--text-main) !important;
+    font-size: 14px;
+}
+.theme-option:hover {
+    background: var(--bg-hover) !important;
+}
+.theme-circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid var(--border-main);
+}
+.theme-dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+
+/* 5. Gold & Black */
+[data-theme="gold"] {
+    --bg-main: #050505;
+    --bg-card: #111111;
+    --bg-hover: #1f1f1f;
+    --border-main: #4a3e15;
+    --text-main: #e0e0e0;
+    --text-muted: #999999;
+    --text-heading: #ffd700;
+    --accent-main: #ffd700;
+    --accent-hover: #ffea00;
+}
+
+
+
+
+
+
+
+
+
+
+/* Fix header buttons width and spacing */
+html body header .login-btn,
+html body nav.fixed-top .login-btn,
+html body .theme-switcher-btn {
+    white-space: nowrap !important;
+    padding: 6px 10px !important;
+    font-size: 14px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+}
+
+
+/* Move search to the right */
+html body header .search-col,
+html body nav.fixed-top .search-col {
+    position: relative !important;
+    left: 45px !important;
+}
+
+
+

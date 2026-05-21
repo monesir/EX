@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "الديوان - الوضع الليلي و الخطوط",
+  "version": "1.0",
+  "description": "إضافة توفر وضع ليلي شامل لموقع الديوان وأزرار لتغيير نوع وحجم خط القصائد.",
+  "content_scripts": [
+    {
+      "matches": ["*://*.aldiwan.net/*"],
+      "js": ["theme-init.js"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": ["*://*.aldiwan.net/*"],
+      "css": ["dark-mode.css"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "host_permissions": [
+    "*://*.aldiwan.net/*"
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["arabic-poetry.otf"],
+      "matches": ["*://*.aldiwan.net/*"]
+    }
+  ]
+}
