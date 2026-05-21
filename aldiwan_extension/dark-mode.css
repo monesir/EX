@@ -935,17 +935,23 @@ html body .diwan-profile-scope .p-tab-link:hover {
 }
 
 /* ================= Footer Store & Social Icons ================= */
-html body .store-icons-menu a,
-html body .icon-menu a {
-    background: var(--bg-hover) !important;
+html body .store-icons-menu img,
+html body .icon-menu i {
+    background: var(--bg-card) !important;
     border: 1px solid var(--border-main) !important;
     color: var(--text-main) !important;
     transition: all 0.2s ease !important;
 }
-html body .store-icons-menu a:hover,
-html body .icon-menu a:hover {
-    background: var(--border-main) !important;
+html body .store-icons-menu a:hover img,
+html body .icon-menu a:hover i {
+    background: var(--bg-hover) !important;
+    border-color: var(--text-muted) !important;
     color: #fff !important;
+}
+html body .store-icons-menu a,
+html body .icon-menu a {
+    border: none !important;
+    background: transparent !important;
 }
 
 
