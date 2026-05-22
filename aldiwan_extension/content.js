@@ -473,7 +473,7 @@
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.direction = 'rtl';
-        ctx.font = \`\${fontSize}px "Arabic Poetry", serif\`;
+        ctx.font = `${fontSize}px "Arabic Poetry", serif`;
         
         // Draw text vertically centered
         let startY = (canvas.height - totalTextHeight) / 2 + (lineHeight / 2) - 30;
