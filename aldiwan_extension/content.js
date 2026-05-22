@@ -470,7 +470,7 @@
         let maxLineWidth = 0;
         let totalTextHeight = 0;
         let lineHeight = fontSize + lineSpacing;
-        let verseGap = fontSize * 1.5; // Very clear, elegant gap between verses
+        let verseGap = 50; // Elegant, moderate gap between verses
         
         lines.forEach(line => {
             if (line === '') {
@@ -529,13 +529,14 @@
         // Draw Ornaments
         const ornament = '❈ ❖ ❈';
         ctx.font = '24px Arial, sans-serif';
-        let startY = (canvas.height - totalTextHeight) / 2 + (lineHeight / 2);
         
-        ctx.fillText(ornament, canvas.width / 2, startY - 80);
-        ctx.fillText(ornament, canvas.width / 2, startY + totalTextHeight - (lineHeight / 2) + 40);
+        // Position ornaments elegantly near the top and bottom borders, away from text
+        ctx.fillText(ornament, canvas.width / 2, 140);
+        ctx.fillText(ornament, canvas.width / 2, canvas.height - 160);
 
         // Draw Poetry Text
         ctx.font = `${fontSize}px "Arabic Poetry", serif`;
+        let startY = (canvas.height - totalTextHeight) / 2 + (lineHeight / 2);
         let currentY = startY;
         
         lines.forEach((line) => {
