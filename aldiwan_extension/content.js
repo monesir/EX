@@ -252,27 +252,30 @@
     }
 
     // --- Custom Context Menu for Quote Image ---
-    const poemContent = document.getElementById('poem_content');
     let customMenu = null;
 
-    if (poemContent) {
-        poemContent.addEventListener('contextmenu', (e) => {
-            const selection = window.getSelection().toString().trim();
-            const h3 = e.target.closest('h3');
-            
-            if (selection.length > 0 || h3) {
-                e.preventDefault();
-                showContextMenu(e.pageX, e.pageY, selection || h3.innerText);
-            }
-        });
+    document.addEventListener('contextmenu', (e) => {
+        const poemContent = document.getElementById('poem_content');
+        if (!poemContent) return; // Not on a poem page
         
-        document.addEventListener('click', () => {
-            if (customMenu) {
-                customMenu.remove();
-                customMenu = null;
-            }
-        });
-    }
+        const selection = window.getSelection().toString().trim();
+        const h3 = e.target.closest('#poem_content h3');
+        
+        // If clicking on a verse, or having text selected inside the poem content
+        const isSelectionInsidePoem = selection.length > 0 && poemContent.contains(window.getSelection().anchorNode);
+        
+        if (h3 || isSelectionInsidePoem) {
+            e.preventDefault();
+            showContextMenu(e.pageX, e.pageY, selection || (h3 ? h3.innerText : ''));
+        }
+    });
+    
+    document.addEventListener('click', () => {
+        if (customMenu) {
+            customMenu.remove();
+            customMenu = null;
+        }
+    });
 
     function showContextMenu(x, y, text) {
         if (customMenu) customMenu.remove();
