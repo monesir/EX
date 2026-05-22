@@ -484,14 +484,16 @@
             }
         });
         
-        // Exact Optical Centering Logic
+        // Exact Optical Centering & Majestic Scaling Logic
         let visualOffset = fontSize * 0.4; // Font internal top padding
         let visualHeight = totalTextHeight - visualOffset;
-        let ornamentGap = fontSize * 0.7; // Logical gap between text and ornaments
-        let visualTopEmptySpace = 40 + (ornamentGap * 1.5); // margin + space
+        let ornamentGap = fontSize * 1.2; // Huge logical gap between text and ornaments
+        let margin = Math.max(40, fontSize * 0.5); // Margin scales with font size
+        let visualTopEmptySpace = margin + (ornamentGap * 2); // Exact symmetric space
 
         // 2. Set dynamic canvas dimensions
-        canvas.width = maxLineWidth + (fontSize * 2.5); // Proportional side margins
+        // Canvas width grows massively with font size to maintain a majestic wide padding
+        canvas.width = maxLineWidth + (fontSize * 6); 
         canvas.height = visualHeight + (visualTopEmptySpace * 2);
 
         // 3. Re-apply context styles after changing dimensions
@@ -509,8 +511,7 @@
         ctx.lineWidth = 2;
         
         // Manual rounded rect (for broader compatibility or use standard if available)
-        const margin = 40;
-        const radius = 20;
+        const radius = margin / 2;
         const w = canvas.width - (margin * 2);
         const h = canvas.height - (margin * 2);
         
