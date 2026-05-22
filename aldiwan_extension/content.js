@@ -272,8 +272,8 @@
 
             const btn = document.createElement('a');
             btn.href = 'javascript:void(0)';
-            btn.innerHTML = '<i class="fas fa-palette"></i> الثيمات';
-            btn.title = 'تغيير الثيم';
+            btn.innerHTML = '<i class="fas fa-palette"></i> السمات';
+            btn.title = 'تغيير السمة';
             // Copy classes from register btn but strip float-left (handled by container)
             btn.className = registerBtn.className.replace('float-left', '').trim() + ' theme-switcher-btn';
             
