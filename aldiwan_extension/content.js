@@ -407,6 +407,8 @@
         customMenu.appendChild(quoteItem);
         customMenu.appendChild(copyItem);
         document.body.appendChild(customMenu);
+    } // <-- This was the missing bracket
+
     function normalizeArabic(str) {
         return str.replace(/[\u0617-\u061A\u064B-\u0652]/g, "").replace(/\s+/g, " ").trim();
     }
