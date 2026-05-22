@@ -423,8 +423,8 @@
 
         // State
         let currentText = processedText;
-        let fontSize = 65;
-        let lineSpacing = 40; 
+        let fontSize = 125;
+        let lineSpacing = -30; 
         let padding = 150; 
 
         const textarea = document.getElementById('quote-text-input');
