@@ -470,7 +470,7 @@
         let maxLineWidth = 0;
         let totalTextHeight = 0;
         let lineHeight = fontSize + lineSpacing;
-        let verseGap = 70; // Elegant gap between verses
+        let verseGap = fontSize * 1.5; // Very clear, elegant gap between verses
         
         lines.forEach(line => {
             if (line === '') {
