@@ -250,4 +250,139 @@
             document.querySelectorAll('.theme-dropdown-menu').forEach(m => m.classList.remove('show'));
         });
     }
+
+    // --- Quote Image Generation ---
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+        if (request.action === "generate_image") {
+            showQuoteModal(request.text);
+        }
+    });
+
+    async function showQuoteModal(text) {
+        const existing = document.getElementById('diwan-quote-modal');
+        if (existing) existing.remove();
+
+        const modal = document.createElement('div');
+        modal.id = 'diwan-quote-modal';
+        modal.style.cssText = `
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 999999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        `;
+
+        const canvasContainer = document.createElement('div');
+        canvasContainer.style.cssText = `
+            background: var(--bg-card, #2f2824); padding: 20px; border-radius: 10px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+            display: flex; flex-direction: column; align-items: center;
+            border: 1px solid var(--border-main, #3e3833);
+        `;
+
+        const canvas = document.createElement('canvas');
+        canvas.width = 1080;
+        canvas.height = 1080;
+        canvas.style.width = 'min(400px, 90vw)';
+        canvas.style.height = 'min(400px, 90vw)';
+        canvas.style.borderRadius = '8px';
+        canvas.style.boxShadow = '0 4px 10px rgba(0,0,0,0.3)';
+        
+        await document.fonts.load('60px "Arabic Poetry"');
+        drawQuote(canvas, text);
+
+        const actions = document.createElement('div');
+        actions.style.cssText = 'margin-top: 20px; display: flex; gap: 15px;';
+
+        const downloadBtn = document.createElement('button');
+        downloadBtn.innerHTML = '<i class="fas fa-download"></i> تحميل الصورة';
+        downloadBtn.style.cssText = 'padding: 10px 20px; background: #007bff; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-family: inherit; font-size: 16px; font-weight: bold; transition: background 0.2s;';
+        downloadBtn.onmouseover = () => downloadBtn.style.background = '#0056b3';
+        downloadBtn.onmouseout = () => downloadBtn.style.background = '#007bff';
+        downloadBtn.onclick = () => {
+            const link = document.createElement('a');
+            link.download = 'اقتباس-الديوان.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        };
+
+        const closeBtn = document.createElement('button');
+        closeBtn.innerText = 'إلغاء';
+        closeBtn.style.cssText = 'padding: 10px 20px; background: transparent; color: var(--text-main, #fff); border: 1px solid var(--border-main, #ccc); border-radius: 5px; cursor: pointer; font-family: inherit; font-size: 16px; transition: all 0.2s;';
+        closeBtn.onmouseover = () => closeBtn.style.background = 'rgba(255,255,255,0.1)';
+        closeBtn.onmouseout = () => closeBtn.style.background = 'transparent';
+        closeBtn.onclick = () => modal.remove();
+
+        actions.appendChild(downloadBtn);
+        actions.appendChild(closeBtn);
+        canvasContainer.appendChild(canvas);
+        canvasContainer.appendChild(actions);
+        modal.appendChild(canvasContainer);
+        document.body.appendChild(modal);
+    }
+
+    function drawQuote(canvas, text) {
+        const ctx = canvas.getContext('2d');
+        
+        // Draw background gradient
+        const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        grad.addColorStop(0, '#151b29'); // Deep dark blue
+        grad.addColorStop(1, '#0a0d14'); 
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Draw elegant border
+        ctx.strokeStyle = 'rgba(212, 175, 55, 0.3)'; // Gold tint
+        ctx.lineWidth = 4;
+        ctx.strokeRect(50, 50, canvas.width - 100, canvas.height - 100);
+        ctx.strokeRect(60, 60, canvas.width - 120, canvas.height - 120);
+
+        // Configure text
+        ctx.fillStyle = '#ffffff';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.direction = 'rtl';
+        
+        // Font
+        ctx.font = '70px "Arabic Poetry", serif';
+        
+        // Wrap text logic (simple newline split + max width wrap)
+        const maxWidth = canvas.width - 160;
+        let words = text.replace(/\\n/g, ' \\n ').split(' ');
+        let lines = [];
+        let currentLine = '';
+
+        for (let i = 0; i < words.length; i++) {
+            let word = words[i];
+            if (word === '\\n') {
+                lines.push(currentLine);
+                currentLine = '';
+                continue;
+            }
+            let testLine = currentLine + word + ' ';
+            let metrics = ctx.measureText(testLine);
+            if (metrics.width > maxWidth && currentLine !== '') {
+                lines.push(currentLine);
+                currentLine = word + ' ';
+            } else {
+                currentLine = testLine;
+            }
+        }
+        lines.push(currentLine);
+        
+        // Remove empty lines at start/end
+        lines = lines.map(l => l.trim()).filter(l => l.length > 0);
+
+        let lineHeight = 120; // Good spacing for Arabic Poetry
+        let totalHeight = lines.length * lineHeight;
+        let startY = (canvas.height - totalHeight) / 2 + (lineHeight / 2) - 30;
+
+        // Draw text
+        lines.forEach((line, index) => {
+            ctx.fillText(line, canvas.width / 2, startY + (index * lineHeight));
+        });
+
+        // Draw watermark
+        ctx.font = '30px Arial, sans-serif';
+        ctx.fillStyle = 'rgba(255,255,255,0.4)';
+        ctx.fillText('aldiwan.net - موسوعة الديوان', canvas.width / 2, canvas.height - 85);
+    }
 })();
