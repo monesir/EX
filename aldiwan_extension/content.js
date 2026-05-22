@@ -484,9 +484,15 @@
             }
         });
         
+        // Exact Optical Centering Logic
+        let visualOffset = fontSize * 0.4; // Font internal top padding
+        let visualHeight = totalTextHeight - visualOffset;
+        let ornamentGap = fontSize * 0.7; // Logical gap between text and ornaments
+        let visualTopEmptySpace = 40 + (ornamentGap * 1.5); // margin + space
+
         // 2. Set dynamic canvas dimensions
-        canvas.width = maxLineWidth + 300;
-        canvas.height = totalTextHeight + 380;
+        canvas.width = maxLineWidth + (fontSize * 2.5); // Proportional side margins
+        canvas.height = visualHeight + (visualTopEmptySpace * 2);
 
         // 3. Re-apply context styles after changing dimensions
         ctx.font = `${fontSize}px "Arabic Poetry", serif`;
@@ -531,17 +537,19 @@
         const ornament = '❈ ❖ ❈';
         ctx.font = '48px Arial, sans-serif';
         
-        // Position ornaments elegantly near the top and bottom borders, away from text
-        ctx.fillText(ornament, canvas.width / 2, 120);
-        ctx.fillText(ornament, canvas.width / 2, canvas.height - 120);
+        let visualTop = visualTopEmptySpace;
+        let visualBottom = visualTop + visualHeight;
+        
+        // Position ornaments exactly symmetric relative to the visual text block
+        ctx.fillText(ornament, canvas.width / 2, visualTop - ornamentGap);
+        ctx.fillText(ornament, canvas.width / 2, visualBottom + ornamentGap);
 
         // Draw Poetry Text
         ctx.font = `${fontSize}px "Arabic Poetry", serif`;
         
-        // We subtract a proportional amount to compensate for the font's internal top padding
-        // This visually balances the top and bottom gaps at any font size
-        let visualOffset = fontSize * 0.4;
-        let startY = (canvas.height - totalTextHeight) / 2 + (lineHeight / 2) - visualOffset;
+        // Mathematical top is adjusted by visualOffset to place the text ink at visualTop
+        let mathTop = visualTop - visualOffset;
+        let startY = mathTop + (lineHeight / 2);
         let currentY = startY;
         
         lines.forEach((line) => {
