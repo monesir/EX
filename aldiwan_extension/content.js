@@ -3,9 +3,11 @@
     const fonts = [
         { family: "", name: "الخط الافتراضي", baseSize: 1.25, lhMult: 1.6, margin: "" },
         { family: "'Arabic Poetry', serif", name: "عام الشعر العربي", baseSize: 2.5, lhMult: 1.15, margin: "margin: 0.9rem 0 !important;" },
-        { family: "'Aref Ruqaa', serif", name: "خط الرقعه", baseSize: 1.4, lhMult: 1.6, margin: "" }
+        { family: "'Aref Ruqaa', serif", name: "خط الرقعه", baseSize: 1.4, lhMult: 1.6, margin: "" },
+        { family: "custom", name: "رابط مخصص...", baseSize: 1.4, lhMult: 1.6, margin: "" }
     ];
     let currentFontIndex = 0; // Default to site default
+    let customFamilyStr = "";
     
     // User zoom offset
     let userFontSizeOffset = 0; 
@@ -62,6 +64,31 @@
             opt.innerHTML = `<span>${f.name}</span>`;
             opt.addEventListener('click', (e) => {
                 e.stopPropagation();
+                
+                if (f.family === "custom") {
+                    let url = prompt("الرجاء إدخال رابط Google Fonts\\nمثال:\\nhttps://fonts.googleapis.com/css2?family=Cairo&display=swap");
+                    if (!url || !url.trim()) return; // Canceled
+                    
+                    let parsedName = null;
+                    let match = url.match(/family=([^&:]+)/);
+                    if (match && match[1]) {
+                        parsedName = match[1].replace(/\+/g, ' ').split(':')[0];
+                    }
+                    if (!parsedName) {
+                        alert("عذراً، الرابط غير صحيح. يجب أن يكون الرابط من موقع Google Fonts.");
+                        return;
+                    }
+                    
+                    if (!document.querySelector(`link[href="${url}"]`)) {
+                        let link = document.createElement('link');
+                        link.rel = 'stylesheet';
+                        link.href = url;
+                        document.head.appendChild(link);
+                    }
+                    
+                    customFamilyStr = `'${parsedName}', sans-serif`;
+                }
+
                 currentFontIndex = idx;
                 updatePoemStyle();
                 fontDropdown.classList.remove('show');
@@ -121,7 +148,9 @@
         }
 
         let fontRule = '';
-        if (fonts[currentFontIndex].family) {
+        if (fonts[currentFontIndex].family === "custom" && customFamilyStr) {
+            fontRule = `font-family: ${customFamilyStr} !important; font-weight: normal !important;`;
+        } else if (fonts[currentFontIndex].family && fonts[currentFontIndex].family !== "custom") {
             fontRule = `font-family: ${fonts[currentFontIndex].family} !important; font-weight: normal !important;`;
         }
 
