@@ -318,7 +318,7 @@
         document.body.appendChild(customMenu);
     }
 
-    async function showQuoteModal(text) {
+    async function showQuoteModal(initialText) {
         const existing = document.getElementById('diwan-quote-modal');
         if (existing) existing.remove();
 
@@ -326,123 +326,173 @@
         modal.id = 'diwan-quote-modal';
         modal.style.cssText = `
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); z-index: 999999;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: rgba(0,0,0,0.85); z-index: 999999;
+            display: flex; flex-direction: row; align-items: center; justify-content: center;
+            gap: 30px; padding: 20px; box-sizing: border-box;
+            backdrop-filter: blur(5px);
         `;
 
+        // Attempt to auto-split halves if they are separated by a wide gap (tabs or multiple spaces)
+        let processedText = initialText.replace(/\t/g, '\n').replace(/ {2,}/g, '\n');
+        
+        // Editor Panel
+        const editorPanel = document.createElement('div');
+        editorPanel.style.cssText = `
+            background: var(--bg-card, #2f2824); padding: 20px; border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex; flex-direction: column; gap: 15px;
+            width: 350px; border: 1px solid var(--border-main, #3e3833);
+            direction: rtl; font-family: Tahoma, Arial, sans-serif;
+        `;
+        
+        editorPanel.innerHTML = `
+            <h3 style="margin: 0; color: #fff; font-size: 18px; text-align: center; border-bottom: 1px solid #444; padding-bottom: 10px;">تعديل الاقتباس</h3>
+            <textarea id="quote-text-input" rows="8" style="
+                width: 100%; background: rgba(0,0,0,0.2); color: #fff; 
+                border: 1px solid #555; border-radius: 8px; padding: 10px; 
+                font-family: 'Arabic Poetry', serif; font-size: 18px; resize: vertical;
+                box-sizing: border-box;
+            "></textarea>
+            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px;">
+                <span style="color: #ccc; font-size: 14px;">حجم الخط</span>
+                <div style="display: flex; gap: 10px;">
+                    <button id="quote-font-minus" style="padding: 5px 15px; border-radius: 5px; border: none; background: #444; color: #fff; cursor: pointer; font-weight: bold;">-</button>
+                    <button id="quote-font-plus" style="padding: 5px 15px; border-radius: 5px; border: none; background: #444; color: #fff; cursor: pointer; font-weight: bold;">+</button>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px;">
+                <span style="color: #ccc; font-size: 14px;">تباعد الأسطر</span>
+                <div style="display: flex; gap: 10px;">
+                    <button id="quote-lh-minus" style="padding: 5px 15px; border-radius: 5px; border: none; background: #444; color: #fff; cursor: pointer; font-weight: bold;">-</button>
+                    <button id="quote-lh-plus" style="padding: 5px 15px; border-radius: 5px; border: none; background: #444; color: #fff; cursor: pointer; font-weight: bold;">+</button>
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <button id="quote-download-btn" style="flex: 1; padding: 12px; background: #d4af37; color: #000; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 15px; transition: 0.2s;">تحميل الصورة</button>
+                <button id="quote-close-btn" style="flex: 1; padding: 12px; background: transparent; color: #fff; border: 1px solid #777; border-radius: 6px; cursor: pointer; font-size: 15px; transition: 0.2s;">إلغاء</button>
+            </div>
+        `;
+
+        // Canvas Panel
         const canvasContainer = document.createElement('div');
         canvasContainer.style.cssText = `
-            background: var(--bg-card, #2f2824); padding: 20px; border-radius: 10px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
-            display: flex; flex-direction: column; align-items: center;
-            border: 1px solid var(--border-main, #3e3833);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
         `;
 
         const canvas = document.createElement('canvas');
         canvas.width = 1080;
-        canvas.height = 1080;
-        canvas.style.width = 'min(400px, 90vw)';
-        canvas.style.height = 'min(400px, 90vw)';
+        canvas.height = 1080; // Default square, but we will resize it dynamically based on content
+        canvas.style.maxWidth = 'min(500px, 90vw)';
+        canvas.style.maxHeight = '90vh';
         canvas.style.borderRadius = '8px';
-        canvas.style.boxShadow = '0 4px 10px rgba(0,0,0,0.3)';
+        canvas.style.boxShadow = '0 10px 40px rgba(0,0,0,0.6)';
         
         await document.fonts.load('60px "Arabic Poetry"');
-        drawQuote(canvas, text);
+        
+        canvasContainer.appendChild(canvas);
+        modal.appendChild(editorPanel);
+        modal.appendChild(canvasContainer);
+        document.body.appendChild(modal);
 
-        const actions = document.createElement('div');
-        actions.style.cssText = 'margin-top: 20px; display: flex; gap: 15px;';
+        // State
+        let currentText = processedText;
+        let fontSize = 65;
+        let lineSpacing = 60; // Extra spacing between lines
+        let padding = 100; // Padding around text
 
-        const downloadBtn = document.createElement('button');
-        downloadBtn.innerHTML = '<i class="fas fa-download"></i> تحميل الصورة';
-        downloadBtn.style.cssText = 'padding: 10px 20px; background: #007bff; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-family: inherit; font-size: 16px; font-weight: bold; transition: background 0.2s;';
-        downloadBtn.onmouseover = () => downloadBtn.style.background = '#0056b3';
-        downloadBtn.onmouseout = () => downloadBtn.style.background = '#007bff';
-        downloadBtn.onclick = () => {
+        const textarea = document.getElementById('quote-text-input');
+        textarea.value = currentText;
+
+        function updateCanvas() {
+            currentText = textarea.value;
+            drawQuote(canvas, currentText, fontSize, lineSpacing, padding);
+        }
+
+        textarea.addEventListener('input', updateCanvas);
+        
+        document.getElementById('quote-font-plus').onclick = () => { fontSize += 5; updateCanvas(); };
+        document.getElementById('quote-font-minus').onclick = () => { fontSize -= 5; updateCanvas(); };
+        document.getElementById('quote-lh-plus').onclick = () => { lineSpacing += 10; updateCanvas(); };
+        document.getElementById('quote-lh-minus').onclick = () => { lineSpacing -= 10; updateCanvas(); };
+
+        document.getElementById('quote-download-btn').onclick = () => {
             const link = document.createElement('a');
             link.download = 'اقتباس-الديوان.png';
             link.href = canvas.toDataURL('image/png');
             link.click();
         };
 
-        const closeBtn = document.createElement('button');
-        closeBtn.innerText = 'إلغاء';
-        closeBtn.style.cssText = 'padding: 10px 20px; background: transparent; color: var(--text-main, #fff); border: 1px solid var(--border-main, #ccc); border-radius: 5px; cursor: pointer; font-family: inherit; font-size: 16px; transition: all 0.2s;';
-        closeBtn.onmouseover = () => closeBtn.style.background = 'rgba(255,255,255,0.1)';
-        closeBtn.onmouseout = () => closeBtn.style.background = 'transparent';
-        closeBtn.onclick = () => modal.remove();
+        document.getElementById('quote-download-btn').onmouseover = (e) => e.target.style.background = '#e5c158';
+        document.getElementById('quote-download-btn').onmouseout = (e) => e.target.style.background = '#d4af37';
 
-        actions.appendChild(downloadBtn);
-        actions.appendChild(closeBtn);
-        canvasContainer.appendChild(canvas);
-        canvasContainer.appendChild(actions);
-        modal.appendChild(canvasContainer);
-        document.body.appendChild(modal);
+        document.getElementById('quote-close-btn').onclick = () => modal.remove();
+
+        // Initial draw
+        updateCanvas();
     }
 
-    function drawQuote(canvas, text) {
+    function drawQuote(canvas, text, fontSize, lineSpacing, padding) {
         const ctx = canvas.getContext('2d');
         
-        // Draw background gradient
-        const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-        grad.addColorStop(0, '#151b29'); // Deep dark blue
-        grad.addColorStop(1, '#0a0d14'); 
+        // Split exact newlines entered by user
+        let lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+        
+        // Calculate required height based on lines and font size
+        let lineHeight = fontSize + lineSpacing;
+        let totalTextHeight = lines.length * lineHeight;
+        
+        // Set canvas dimensions dynamically (minimum 1080x1080 for square look, but expand if needed)
+        canvas.width = 1080;
+        canvas.height = Math.max(1080, totalTextHeight + (padding * 2) + 150); // 150 for watermark/borders
+
+        // Draw elegant dark background
+        ctx.fillStyle = '#111317'; // Very dark, professional grey-blue
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Draw subtle pattern or gradient overlay
+        const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        grad.addColorStop(0, 'rgba(30, 35, 45, 0.5)'); 
+        grad.addColorStop(1, 'rgba(10, 12, 15, 0.8)'); 
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Draw elegant border
-        ctx.strokeStyle = 'rgba(212, 175, 55, 0.3)'; // Gold tint
-        ctx.lineWidth = 4;
+        // Draw elegant double border
+        ctx.strokeStyle = '#d4af37'; // Gold
+        ctx.lineWidth = 2;
+        ctx.strokeRect(40, 40, canvas.width - 80, canvas.height - 80);
+        
+        ctx.strokeStyle = 'rgba(212, 175, 55, 0.3)'; // Faded Gold
+        ctx.lineWidth = 1;
         ctx.strokeRect(50, 50, canvas.width - 100, canvas.height - 100);
-        ctx.strokeRect(60, 60, canvas.width - 120, canvas.height - 120);
 
         // Configure text
         ctx.fillStyle = '#ffffff';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.direction = 'rtl';
+        ctx.font = \`\${fontSize}px "Arabic Poetry", serif\`;
         
-        // Font
-        ctx.font = '70px "Arabic Poetry", serif';
-        
-        // Wrap text logic (simple newline split + max width wrap)
-        const maxWidth = canvas.width - 160;
-        let words = text.replace(/\\n/g, ' \\n ').split(' ');
-        let lines = [];
-        let currentLine = '';
+        // Draw text vertically centered
+        let startY = (canvas.height - totalTextHeight) / 2 + (lineHeight / 2) - 30;
 
-        for (let i = 0; i < words.length; i++) {
-            let word = words[i];
-            if (word === '\\n') {
-                lines.push(currentLine);
-                currentLine = '';
-                continue;
-            }
-            let testLine = currentLine + word + ' ';
-            let metrics = ctx.measureText(testLine);
-            if (metrics.width > maxWidth && currentLine !== '') {
-                lines.push(currentLine);
-                currentLine = word + ' ';
-            } else {
-                currentLine = testLine;
-            }
-        }
-        lines.push(currentLine);
-        
-        // Remove empty lines at start/end
-        lines = lines.map(l => l.trim()).filter(l => l.length > 0);
-
-        let lineHeight = 120; // Good spacing for Arabic Poetry
-        let totalHeight = lines.length * lineHeight;
-        let startY = (canvas.height - totalHeight) / 2 + (lineHeight / 2) - 30;
-
-        // Draw text
         lines.forEach((line, index) => {
+            // Shadow for text depth
+            ctx.shadowColor = 'rgba(0,0,0,0.8)';
+            ctx.shadowBlur = 10;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 4;
+            
             ctx.fillText(line, canvas.width / 2, startY + (index * lineHeight));
         });
 
-        // Draw watermark
-        ctx.font = '30px Arial, sans-serif';
-        ctx.fillStyle = 'rgba(255,255,255,0.4)';
-        ctx.fillText('aldiwan.net - موسوعة الديوان', canvas.width / 2, canvas.height - 85);
+        // Reset shadow for watermark
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+
+        // Draw watermark at bottom
+        ctx.font = '28px Tahoma, sans-serif';
+        ctx.fillStyle = 'rgba(255,255,255,0.3)';
+        ctx.fillText('aldiwan.net - موسوعة الديوان', canvas.width / 2, canvas.height - 75);
     }
 })();
