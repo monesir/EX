@@ -483,9 +483,9 @@
         });
         
         // 2. Set dynamic canvas dimensions
-        // Elegant proportions: square or tall rectangle
-        canvas.width = Math.max(1080, maxLineWidth + 300); // 150px margin on each side
-        canvas.height = Math.max(1080, totalTextHeight + (padding * 2) + 200);
+        // Elegant proportions wrapping exactly the text
+        canvas.width = maxLineWidth + 300; // 150px margin on each side
+        canvas.height = totalTextHeight + 500; // Enough space for padding and ornaments
 
         // 3. Re-apply context styles after changing dimensions
         ctx.font = `${fontSize}px "Arabic Poetry", serif`;
