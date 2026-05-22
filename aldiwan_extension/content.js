@@ -408,8 +408,8 @@
                     <input type="range" id="quote-bg-blur" min="0" max="20" value="0" style="flex: 1;">
                 </div>
                 <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
-                    <span style="color: #aaa; font-size: 12px; width: 45px;">تكبير</span>
-                    <input type="range" id="quote-bg-zoom" min="100" max="300" value="100" style="flex: 1;">
+                    <span style="color: #aaa; font-size: 12px; width: 45px;">حجم</span>
+                    <input type="range" id="quote-bg-zoom" min="10" max="300" value="100" style="flex: 1;">
                 </div>
                 <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
                     <span style="color: #aaa; font-size: 12px; width: 45px;">أفقياً</span>
