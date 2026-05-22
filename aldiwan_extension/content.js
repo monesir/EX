@@ -251,12 +251,72 @@
         });
     }
 
-    // --- Quote Image Generation ---
-    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-        if (request.action === "generate_image") {
-            showQuoteModal(request.text);
-        }
-    });
+    // --- Custom Context Menu for Quote Image ---
+    const poemContent = document.getElementById('poem_content');
+    let customMenu = null;
+
+    if (poemContent) {
+        poemContent.addEventListener('contextmenu', (e) => {
+            const selection = window.getSelection().toString().trim();
+            const h3 = e.target.closest('h3');
+            
+            if (selection.length > 0 || h3) {
+                e.preventDefault();
+                showContextMenu(e.pageX, e.pageY, selection || h3.innerText);
+            }
+        });
+        
+        document.addEventListener('click', () => {
+            if (customMenu) {
+                customMenu.remove();
+                customMenu = null;
+            }
+        });
+    }
+
+    function showContextMenu(x, y, text) {
+        if (customMenu) customMenu.remove();
+        
+        customMenu = document.createElement('div');
+        customMenu.style.cssText = `
+            position: absolute; top: ${y}px; left: ${x}px;
+            background: var(--bg-card, #2f2824); border: 1px solid var(--border-main, #3e3833);
+            border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 999999; padding: 5px 0; min-width: 180px;
+            font-family: inherit; direction: rtl;
+        `;
+
+        // Quote Option
+        const quoteItem = document.createElement('div');
+        quoteItem.innerHTML = '<i class="fas fa-image" style="margin-left: 8px;"></i> تصميم اقتباس';
+        quoteItem.style.cssText = `
+            padding: 10px 15px; cursor: pointer; color: var(--text-main, #fff);
+            display: flex; align-items: center; transition: background 0.2s;
+        `;
+        quoteItem.onmouseover = () => quoteItem.style.background = 'var(--bg-hover, #3e3833)';
+        quoteItem.onmouseout = () => quoteItem.style.background = 'transparent';
+        quoteItem.onclick = (e) => {
+            e.stopPropagation();
+            customMenu.remove();
+            showQuoteModal(text);
+        };
+
+        // Copy Option
+        const copyItem = document.createElement('div');
+        copyItem.innerHTML = '<i class="fas fa-copy" style="margin-left: 8px;"></i> نسخ النص';
+        copyItem.style.cssText = quoteItem.style.cssText;
+        copyItem.onmouseover = () => copyItem.style.background = 'var(--bg-hover, #3e3833)';
+        copyItem.onmouseout = () => copyItem.style.background = 'transparent';
+        copyItem.onclick = (e) => {
+            e.stopPropagation();
+            navigator.clipboard.writeText(text);
+            customMenu.remove();
+        };
+
+        customMenu.appendChild(quoteItem);
+        customMenu.appendChild(copyItem);
+        document.body.appendChild(customMenu);
+    }
 
     async function showQuoteModal(text) {
         const existing = document.getElementById('diwan-quote-modal');

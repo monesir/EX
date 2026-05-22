@@ -16,12 +16,6 @@
       "run_at": "document_end"
     }
   ],
-  "permissions": [
-    "contextMenus"
-  ],
-  "background": {
-    "service_worker": "background.js"
-  },
   "host_permissions": [
     "*://*.aldiwan.net/*"
   ],
