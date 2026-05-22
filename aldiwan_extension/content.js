@@ -535,7 +535,8 @@
 
         // Draw Ornaments
         const ornament = '❈ ❖ ❈';
-        ctx.font = '48px Arial, sans-serif';
+        let ornamentFontSize = Math.max(24, fontSize * 0.4);
+        ctx.font = `${ornamentFontSize}px Arial, sans-serif`;
         
         let visualTop = visualTopEmptySpace;
         let visualBottom = visualTop + visualHeight;
