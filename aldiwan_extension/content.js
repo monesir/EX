@@ -552,32 +552,33 @@
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 3;
 
-        // Draw elegant double border
-        // Use soft gold if there's an image so it stands out, otherwise dark brown
-        ctx.strokeStyle = backgroundImage ? 'rgba(196, 156, 102, 0.8)' : '#3d362e';
-        
-        function drawRoundedRect(x, y, w, h, r) {
-            ctx.beginPath();
-            ctx.moveTo(x + r, y);
-            ctx.lineTo(x + w - r, y);
-            ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-            ctx.lineTo(x + w, y + h - r);
-            ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-            ctx.lineTo(x + r, y + h);
-            ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-            ctx.lineTo(x, y + r);
-            ctx.quadraticCurveTo(x, y, x + r, y);
-            ctx.closePath();
-            ctx.stroke();
-        }
+        // Draw elegant double border only if there is NO background image
+        if (!backgroundImage) {
+            ctx.strokeStyle = '#3d362e';
+            
+            function drawRoundedRect(x, y, w, h, r) {
+                ctx.beginPath();
+                ctx.moveTo(x + r, y);
+                ctx.lineTo(x + w - r, y);
+                ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+                ctx.lineTo(x + w, y + h - r);
+                ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+                ctx.lineTo(x + r, y + h);
+                ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+                ctx.lineTo(x, y + r);
+                ctx.quadraticCurveTo(x, y, x + r, y);
+                ctx.closePath();
+                ctx.stroke();
+            }
 
-        // Outer thin border
-        ctx.lineWidth = backgroundImage ? 1.5 : 1;
-        drawRoundedRect(m1, m1, canvas.width - (m1 * 2), canvas.height - (m1 * 2), 15);
-        
-        // Inner thin border
-        ctx.lineWidth = backgroundImage ? 1.5 : 1;
-        drawRoundedRect(m2, m2, canvas.width - (m2 * 2), canvas.height - (m2 * 2), 11);
+            // Outer thin border
+            ctx.lineWidth = 1;
+            drawRoundedRect(m1, m1, canvas.width - (m1 * 2), canvas.height - (m1 * 2), 15);
+            
+            // Inner thin border
+            ctx.lineWidth = 1;
+            drawRoundedRect(m2, m2, canvas.width - (m2 * 2), canvas.height - (m2 * 2), 11);
+        }
 
         ctx.fillStyle = textGrad;
 
