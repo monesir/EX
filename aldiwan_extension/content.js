@@ -392,40 +392,12 @@
         copyItem.onclick = (e) => {
             e.stopPropagation();
             
-            // Format poetry before copying using smart detection
-            let lines = text.split('\n').map(l => l.trim()).filter(l => l !== '');
-            let formattedLines = [];
-            let bet1Nodes = document.querySelectorAll('.bet-1');
-            
-            if (bet1Nodes.length > 0) {
-                let bet1Texts = Array.from(bet1Nodes).map(n => n.innerText.trim());
-                let currentVerse = [];
-                for (let i = 0; i < lines.length; i++) {
-                    let line = lines[i];
-                    
-                    if (bet1Texts.includes(line)) {
-                        if (currentVerse.length > 0) {
-                            formattedLines.push(currentVerse.join("    \n"));
-                            currentVerse = [];
-                        }
-                        currentVerse.push(line);
-                    } else {
-                        currentVerse.push(line);
-                        // Force push if it reaches 2 parts
-                        if (currentVerse.length === 2) {
-                            formattedLines.push(currentVerse.join("    \n"));
-                            currentVerse = [];
-                        }
-                    }
-                }
-                if (currentVerse.length > 0) {
-                    formattedLines.push(currentVerse.join("    \n"));
-                }
+            let formatted = smartCopyPoetry(text);
+            if (formatted) {
+                navigator.clipboard.writeText(formatted);
             } else {
-                formattedLines = lines; // Free verse, just keep lines
+                navigator.clipboard.writeText(text); // Fallback to raw text if not poetry
             }
-            
-            navigator.clipboard.writeText(formattedLines.join('\n\n'));
             
             // Feedback
             copyItem.innerHTML = '<i class="fas fa-check" style="margin-left: 8px; color: #ebd197;"></i> تم النسخ بذكاء!';
@@ -437,57 +409,84 @@
         document.body.appendChild(customMenu);
     }
 
-    // Intercept native Ctrl+C or right-click -> copy to apply our smart poetry formatting
+    // Helper function for smart copying
+    function smartCopyPoetry(text) {
+        let lines = text.split('\n').map(l => l.trim()).filter(l => l !== '');
+        let bet1Nodes = document.querySelectorAll('.bet-1');
+        
+        if (bet1Nodes.length === 0) return null;
+        
+        let bet1Texts = Array.from(bet1Nodes).map(n => n.innerText.trim());
+        let hasPoetry = lines.some(l => bet1Texts.includes(l));
+        if (!hasPoetry) return null;
+        
+        let formattedLines = [];
+        let currentVerse = [];
+        for (let i = 0; i < lines.length; i++) {
+            let line = lines[i];
+            
+            if (bet1Texts.includes(line)) {
+                if (currentVerse.length > 0) {
+                    formattedLines.push(currentVerse.join("    \n"));
+                    currentVerse = [];
+                }
+                currentVerse.push(line);
+            } else {
+                currentVerse.push(line);
+                if (currentVerse.length === 2) {
+                    formattedLines.push(currentVerse.join("    \n"));
+                    currentVerse = [];
+                }
+            }
+        }
+        if (currentVerse.length > 0) {
+            formattedLines.push(currentVerse.join("    \n"));
+        }
+        return formattedLines.join('\n\n');
+    }
+
+    function showCopyToast() {
+        let existing = document.getElementById('aldiwan-smart-copy-toast');
+        if (existing) existing.remove();
+        
+        let toast = document.createElement('div');
+        toast.id = 'aldiwan-smart-copy-toast';
+        toast.innerHTML = '<i class="fas fa-check" style="margin-left: 8px;"></i> تم النسخ بذكاء!';
+        toast.style.cssText = 'position: fixed; bottom: 20px; left: 20px; background: #ebd197; color: #000; padding: 10px 20px; border-radius: 5px; z-index: 999999; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: opacity 0.5s; font-family: "Arabic Poetry", Arial, sans-serif;';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.style.opacity = '0', 1500);
+        setTimeout(() => toast.remove(), 2000);
+    }
+
+    // Intercept native copy event
     window.addEventListener('copy', (e) => {
         let sel = window.getSelection();
         if (!sel.rangeCount || sel.isCollapsed) return;
         
-        let text = sel.toString();
-        let lines = text.split('\n').map(l => l.trim()).filter(l => l !== '');
-        let bet1Nodes = document.querySelectorAll('.bet-1');
-        
-        if (bet1Nodes.length > 0) {
-            let bet1Texts = Array.from(bet1Nodes).map(n => n.innerText.trim());
-            // Only intercept if we detect that poetry is being copied
-            let hasPoetry = lines.some(l => bet1Texts.includes(l));
+        let formatted = smartCopyPoetry(sel.toString());
+        if (formatted) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            e.clipboardData.setData('text/plain', formatted);
+            showCopyToast();
+        }
+    }, { capture: true });
+
+    // Intercept Ctrl+C directly to bypass site's keydown blocks
+    window.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'C')) {
+            let sel = window.getSelection();
+            if (!sel.rangeCount || sel.isCollapsed) return;
             
-            if (hasPoetry) {
-                e.preventDefault(); // Cancel standard browser copy
-                e.stopImmediatePropagation(); // Prevent site scripts from overriding this
-                
-                let formattedLines = [];
-                let currentVerse = [];
-                for (let i = 0; i < lines.length; i++) {
-                    let line = lines[i];
-                    
-                    if (bet1Texts.includes(line)) {
-                        if (currentVerse.length > 0) {
-                            formattedLines.push(currentVerse.join("    \n"));
-                            currentVerse = [];
-                        }
-                        currentVerse.push(line);
-                    } else {
-                        currentVerse.push(line);
-                        if (currentVerse.length === 2) {
-                            formattedLines.push(currentVerse.join("    \n"));
-                            currentVerse = [];
-                        }
-                    }
-                }
-                if (currentVerse.length > 0) {
-                    formattedLines.push(currentVerse.join("    \n"));
-                }
-                
-                // Write our formatted text to the clipboard
-                e.clipboardData.setData('text/plain', formattedLines.join('\n\n'));
-                
-                // Show a tiny toast notification to confirm it worked
-                let toast = document.createElement('div');
-                toast.innerHTML = '<i class="fas fa-check" style="margin-left: 8px;"></i> تم النسخ بذكاء!';
-                toast.style.cssText = 'position: fixed; bottom: 20px; left: 20px; background: #ebd197; color: #000; padding: 10px 20px; border-radius: 5px; z-index: 999999; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: opacity 0.5s; font-family: "Arabic Poetry", Arial, sans-serif;';
-                document.body.appendChild(toast);
-                setTimeout(() => toast.style.opacity = '0', 1500);
-                setTimeout(() => toast.remove(), 2000);
+            let formatted = smartCopyPoetry(sel.toString());
+            if (formatted) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                navigator.clipboard.writeText(formatted).then(() => {
+                    showCopyToast();
+                }).catch(err => {
+                    console.error("Smart Copy failed", err);
+                });
             }
         }
     }, { capture: true });
