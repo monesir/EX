@@ -541,8 +541,20 @@
             ctx.globalAlpha = 1.0;
         }
 
+        // Setup Text Gradient for Soft Gold
+        const textGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        textGrad.addColorStop(0, '#ebd197');
+        textGrad.addColorStop(1, '#c49c66');
+
+        // Global Shadow for readability over textured background images
+        ctx.shadowColor = 'rgba(0,0,0,0.7)';
+        ctx.shadowBlur = 6;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 3;
+
         // Draw elegant double border
-        ctx.strokeStyle = '#3d362e';
+        // Use soft gold if there's an image so it stands out, otherwise dark brown
+        ctx.strokeStyle = backgroundImage ? 'rgba(196, 156, 102, 0.8)' : '#3d362e';
         
         function drawRoundedRect(x, y, w, h, r) {
             ctx.beginPath();
@@ -560,24 +572,14 @@
         }
 
         // Outer thin border
-        ctx.lineWidth = 1;
+        ctx.lineWidth = backgroundImage ? 1.5 : 1;
         drawRoundedRect(m1, m1, canvas.width - (m1 * 2), canvas.height - (m1 * 2), 15);
         
         // Inner thin border
-        ctx.lineWidth = 1;
+        ctx.lineWidth = backgroundImage ? 1.5 : 1;
         drawRoundedRect(m2, m2, canvas.width - (m2 * 2), canvas.height - (m2 * 2), 11);
 
-        // Setup Text Gradient for Soft Gold
-        const textGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-        textGrad.addColorStop(0, '#ebd197');
-        textGrad.addColorStop(1, '#c49c66');
         ctx.fillStyle = textGrad;
-
-        // Global Shadow for readability over textured background images
-        ctx.shadowColor = 'rgba(0,0,0,0.7)';
-        ctx.shadowBlur = 6;
-        ctx.shadowOffsetX = 0;
-        ctx.shadowOffsetY = 3;
 
         // Draw Ornaments
         const ornament = '❈ ❖ ❈';
