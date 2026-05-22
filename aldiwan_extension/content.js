@@ -685,14 +685,15 @@
             ctx.fillStyle = textColor;
         }
 
+        // Calculate visual bounds
+        let visualTop = visualTopEmptySpace;
+        let visualBottom = visualTop + visualHeight;
+
         // Draw Ornaments
         if (showOrnaments) {
             const ornament = '❈ ❖ ❈';
             let ornamentFontSize = Math.max(24, fontSize * 0.4);
             ctx.font = `bold ${ornamentFontSize}px Arial, sans-serif`;
-            
-            let visualTop = visualTopEmptySpace;
-            let visualBottom = visualTop + visualHeight;
             
             // Position ornaments exactly symmetric relative to the visual text block
             ctx.fillText(ornament, canvas.width / 2, visualTop - ornamentGap);
