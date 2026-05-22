@@ -484,16 +484,17 @@
             }
         });
         
-        // Exact Optical Centering & Majestic Scaling Logic
+        // Exact Optical Centering & Majestic Layout Logic
         let visualOffset = fontSize * 0.4; // Font internal top padding
         let visualHeight = totalTextHeight - visualOffset;
-        let ornamentGap = fontSize * 1.2; // Huge logical gap between text and ornaments
-        let margin = Math.max(40, fontSize * 0.5); // Margin scales with font size
-        let visualTopEmptySpace = margin + (ornamentGap * 2); // Exact symmetric space
+        let ornamentGap = fontSize * 0.9; // Perfect elegant gap
+        let m1 = 20; // Outer border margin
+        let m2 = 28; // Inner border margin
+        let visualTopEmptySpace = m1 + (ornamentGap * 2); // Exact symmetric space
 
         // 2. Set dynamic canvas dimensions
-        // Canvas width grows massively with font size to maintain a majestic wide padding
-        canvas.width = maxLineWidth + (fontSize * 6); 
+        // Canvas width uses a perfect golden ratio padding (approx 4.5x font size total)
+        canvas.width = maxLineWidth + (fontSize * 4.5); 
         canvas.height = visualHeight + (visualTopEmptySpace * 2);
 
         // 3. Re-apply context styles after changing dimensions
@@ -503,30 +504,34 @@
         ctx.textAlign = 'center';
 
         // Draw background (Solid dark warm gray)
-        ctx.fillStyle = '#161514';
+        ctx.fillStyle = '#141311'; // Slightly darker for ultimate premium feel
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Draw elegant thin border
+        // Draw elegant double border
         ctx.strokeStyle = '#3d362e';
-        ctx.lineWidth = 2;
         
-        // Manual rounded rect (for broader compatibility or use standard if available)
-        const radius = margin / 2;
-        const w = canvas.width - (margin * 2);
-        const h = canvas.height - (margin * 2);
+        function drawRoundedRect(x, y, w, h, r) {
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.lineTo(x + w - r, y);
+            ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+            ctx.lineTo(x + w, y + h - r);
+            ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+            ctx.lineTo(x + r, y + h);
+            ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+            ctx.lineTo(x, y + r);
+            ctx.quadraticCurveTo(x, y, x + r, y);
+            ctx.closePath();
+            ctx.stroke();
+        }
+
+        // Outer thin border
+        ctx.lineWidth = 1;
+        drawRoundedRect(m1, m1, canvas.width - (m1 * 2), canvas.height - (m1 * 2), 15);
         
-        ctx.beginPath();
-        ctx.moveTo(margin + radius, margin);
-        ctx.lineTo(margin + w - radius, margin);
-        ctx.quadraticCurveTo(margin + w, margin, margin + w, margin + radius);
-        ctx.lineTo(margin + w, margin + h - radius);
-        ctx.quadraticCurveTo(margin + w, margin + h, margin + w - radius, margin + h);
-        ctx.lineTo(margin + radius, margin + h);
-        ctx.quadraticCurveTo(margin, margin + h, margin, margin + h - radius);
-        ctx.lineTo(margin, margin + radius);
-        ctx.quadraticCurveTo(margin, margin, margin + radius, margin);
-        ctx.closePath();
-        ctx.stroke();
+        // Inner thin border
+        ctx.lineWidth = 1;
+        drawRoundedRect(m2, m2, canvas.width - (m2 * 2), canvas.height - (m2 * 2), 11);
 
         // Setup Text Gradient for Soft Gold
         const textGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
