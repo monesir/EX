@@ -407,25 +407,31 @@
         customMenu.appendChild(quoteItem);
         customMenu.appendChild(copyItem);
         document.body.appendChild(customMenu);
+    function normalizeArabic(str) {
+        return str.replace(/[\u0617-\u061A\u064B-\u0652]/g, "").replace(/\s+/g, " ").trim();
     }
 
     // Helper function for smart copying
     function smartCopyPoetry(text) {
         let lines = text.split('\n').map(l => l.trim()).filter(l => l !== '');
-        let bet1Nodes = document.querySelectorAll('.bet-1');
+        if (lines.length === 0) return null;
         
+        let bet1Nodes = document.querySelectorAll('.bet-1');
         if (bet1Nodes.length === 0) return null;
         
-        let bet1Texts = Array.from(bet1Nodes).map(n => n.innerText.trim());
-        let hasPoetry = lines.some(l => bet1Texts.includes(l));
+        let bet1Texts = Array.from(bet1Nodes).map(n => normalizeArabic(n.innerText));
+        
+        let hasPoetry = lines.some(l => bet1Texts.includes(normalizeArabic(l)));
         if (!hasPoetry) return null;
         
         let formattedLines = [];
         let currentVerse = [];
+        
         for (let i = 0; i < lines.length; i++) {
             let line = lines[i];
+            let normLine = normalizeArabic(line);
             
-            if (bet1Texts.includes(line)) {
+            if (bet1Texts.includes(normLine)) {
                 if (currentVerse.length > 0) {
                     formattedLines.push(currentVerse.join("    \n"));
                     currentVerse = [];
