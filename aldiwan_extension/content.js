@@ -437,6 +437,52 @@
         document.body.appendChild(customMenu);
     }
 
+    // Intercept native Ctrl+C or right-click -> copy to apply our smart poetry formatting
+    document.addEventListener('copy', (e) => {
+        let sel = window.getSelection();
+        if (!sel.rangeCount || sel.isCollapsed) return;
+        
+        let text = sel.toString();
+        let lines = text.split('\n').map(l => l.trim()).filter(l => l !== '');
+        let bet1Nodes = document.querySelectorAll('.bet-1');
+        
+        if (bet1Nodes.length > 0) {
+            let bet1Texts = Array.from(bet1Nodes).map(n => n.innerText.trim());
+            // Only intercept if we detect that poetry is being copied
+            let hasPoetry = lines.some(l => bet1Texts.includes(l));
+            
+            if (hasPoetry) {
+                e.preventDefault(); // Cancel standard browser copy
+                
+                let formattedLines = [];
+                let currentVerse = [];
+                for (let i = 0; i < lines.length; i++) {
+                    let line = lines[i];
+                    
+                    if (bet1Texts.includes(line)) {
+                        if (currentVerse.length > 0) {
+                            formattedLines.push(currentVerse.join("    \n"));
+                            currentVerse = [];
+                        }
+                        currentVerse.push(line);
+                    } else {
+                        currentVerse.push(line);
+                        if (currentVerse.length === 2) {
+                            formattedLines.push(currentVerse.join("    \n"));
+                            currentVerse = [];
+                        }
+                    }
+                }
+                if (currentVerse.length > 0) {
+                    formattedLines.push(currentVerse.join("    \n"));
+                }
+                
+                // Write our formatted text to the clipboard
+                e.clipboardData.setData('text/plain', formattedLines.join('\n\n'));
+            }
+        }
+    });
+
     async function showQuoteModal(initialText) {
         const existing = document.getElementById('diwan-quote-modal');
         if (existing) existing.remove();
