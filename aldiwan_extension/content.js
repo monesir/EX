@@ -396,6 +396,32 @@
                     <button id="quote-lh-plus" style="padding: 5px 15px; border-radius: 5px; border: none; background: #444; color: #fff; cursor: pointer; font-weight: bold;">+</button>
                 </div>
             </div>
+            
+            <div id="quote-image-controls" style="display: none; flex-direction: column; gap: 10px; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px;">
+                <div style="color: #dcb98a; font-size: 13px; text-align: center; margin-bottom: 5px; font-weight: bold;">إعدادات الصورة</div>
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                    <span style="color: #aaa; font-size: 12px; width: 45px;">تعتيم</span>
+                    <input type="range" id="quote-bg-dim" min="0" max="95" value="65" style="flex: 1;">
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                    <span style="color: #aaa; font-size: 12px; width: 45px;">تغبيش</span>
+                    <input type="range" id="quote-bg-blur" min="0" max="20" value="0" style="flex: 1;">
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                    <span style="color: #aaa; font-size: 12px; width: 45px;">تكبير</span>
+                    <input type="range" id="quote-bg-zoom" min="100" max="300" value="100" style="flex: 1;">
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                    <span style="color: #aaa; font-size: 12px; width: 45px;">أفقياً</span>
+                    <input type="range" id="quote-bg-x" min="-1000" max="1000" value="0" style="flex: 1;">
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                    <span style="color: #aaa; font-size: 12px; width: 45px;">عمودياً</span>
+                    <input type="range" id="quote-bg-y" min="-1000" max="1000" value="0" style="flex: 1;">
+                </div>
+                <button id="quote-bg-remove" style="margin-top: 5px; padding: 5px; background: #6b2f2f; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">إزالة الصورة</button>
+            </div>
+
             <div style="display: flex; gap: 10px; margin-top: 10px;">
                 <button id="quote-bg-btn" style="flex: 1; padding: 12px; background: transparent; color: #fff; border: 1px solid #777; border-radius: 6px; cursor: pointer; font-size: 15px; transition: 0.2s;">صورة خلفية</button>
                 <input type="file" id="quote-bg-input" accept="image/*" style="display: none;">
@@ -429,13 +455,28 @@
         let lineSpacing = -30; 
         let padding = 150; 
         let backgroundImage = null;
+        let bgDim = 65;
+        let bgBlur = 0;
+        let bgZoom = 100;
+        let bgPanX = 0;
+        let bgPanY = 0;
 
         const textarea = document.getElementById('quote-text-input');
         textarea.value = currentText;
 
         function updateCanvas() {
             currentText = textarea.value;
-            drawQuote(canvas, currentText, fontSize, lineSpacing, padding, backgroundImage);
+            
+            const controlsPanel = document.getElementById('quote-image-controls');
+            if (backgroundImage) {
+                controlsPanel.style.display = 'flex';
+                document.getElementById('quote-bg-btn').style.display = 'none'; // hide the add background button
+            } else {
+                controlsPanel.style.display = 'none';
+                document.getElementById('quote-bg-btn').style.display = 'block';
+            }
+            
+            drawQuote(canvas, currentText, fontSize, lineSpacing, padding, backgroundImage, bgDim, bgBlur, bgZoom, bgPanX, bgPanY);
         }
 
         textarea.addEventListener('input', updateCanvas);
@@ -444,6 +485,25 @@
         document.getElementById('quote-font-minus').onclick = () => { fontSize -= 5; updateCanvas(); };
         document.getElementById('quote-lh-plus').onclick = () => { lineSpacing += 10; updateCanvas(); };
         document.getElementById('quote-lh-minus').onclick = () => { lineSpacing -= 10; updateCanvas(); };
+
+        // Image Controls events
+        document.getElementById('quote-bg-dim').oninput = (e) => { bgDim = parseInt(e.target.value); updateCanvas(); };
+        document.getElementById('quote-bg-blur').oninput = (e) => { bgBlur = parseInt(e.target.value); updateCanvas(); };
+        document.getElementById('quote-bg-zoom').oninput = (e) => { bgZoom = parseInt(e.target.value); updateCanvas(); };
+        document.getElementById('quote-bg-x').oninput = (e) => { bgPanX = parseInt(e.target.value); updateCanvas(); };
+        document.getElementById('quote-bg-y').oninput = (e) => { bgPanY = parseInt(e.target.value); updateCanvas(); };
+        
+        document.getElementById('quote-bg-remove').onclick = () => { 
+            backgroundImage = null; 
+            bgDim = 65; bgBlur = 0; bgZoom = 100; bgPanX = 0; bgPanY = 0;
+            document.getElementById('quote-bg-dim').value = bgDim;
+            document.getElementById('quote-bg-blur').value = bgBlur;
+            document.getElementById('quote-bg-zoom').value = bgZoom;
+            document.getElementById('quote-bg-x').value = bgPanX;
+            document.getElementById('quote-bg-y').value = bgPanY;
+            document.getElementById('quote-bg-input').value = '';
+            updateCanvas(); 
+        };
 
         document.getElementById('quote-bg-btn').onclick = () => {
             document.getElementById('quote-bg-input').click();
@@ -480,7 +540,7 @@
         updateCanvas();
     }
 
-    function drawQuote(canvas, text, fontSize, lineSpacing, padding, backgroundImage) {
+    function drawQuote(canvas, text, fontSize, lineSpacing, padding, backgroundImage, bgDim, bgBlur, bgZoom, bgPanX, bgPanY) {
         const ctx = canvas.getContext('2d');
         
         // Clean canvas
@@ -530,14 +590,22 @@
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         if (backgroundImage) {
-            let scale = Math.max(canvas.width / backgroundImage.width, canvas.height / backgroundImage.height);
+            let scale = Math.max(canvas.width / backgroundImage.width, canvas.height / backgroundImage.height) * (bgZoom / 100);
             let w = backgroundImage.width * scale;
             let h = backgroundImage.height * scale;
-            let x = (canvas.width / 2) - (w / 2);
-            let y = (canvas.height / 2) - (h / 2);
+            let x = (canvas.width / 2) - (w / 2) + bgPanX;
+            let y = (canvas.height / 2) - (h / 2) + bgPanY;
             
-            ctx.globalAlpha = 0.35; // Subtle overlay so text is highly readable
+            if (bgBlur > 0) {
+                ctx.filter = `blur(${bgBlur}px)`;
+            }
+            
+            // Set opacity based on user dimension choice (100 - bgDim = alpha)
+            ctx.globalAlpha = (100 - bgDim) / 100; 
             ctx.drawImage(backgroundImage, x, y, w, h);
+            
+            // Reset
+            ctx.filter = 'none';
             ctx.globalAlpha = 1.0;
         }
 
