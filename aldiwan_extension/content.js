@@ -335,8 +335,31 @@
             backdrop-filter: blur(5px);
         `;
 
-        // Replace large spaces or tabs with newlines so each half-line is on its own line
-        let processedText = initialText.replace(/\t/g, '\n').replace(/ {2,}/g, '\n');
+        // Smart Poetry Parser: Automatically detect verses and half-lines
+        let processedText = '';
+        let rawLines = initialText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+        
+        // If the selection has multiple lines, check if they are already verses (separated by tabs/large spaces)
+        let isAlreadyVerses = rawLines.some(line => /\t| {2,}/.test(line));
+        
+        if (isAlreadyVerses) {
+            rawLines.forEach((line, index) => {
+                let parts = line.split(/\t| {2,}/).map(p => p.trim()).filter(p => p.length > 0);
+                processedText += parts.join('\n') + '\n';
+                if (index !== rawLines.length - 1) {
+                    processedText += '\n'; // Elegant empty line between verses
+                }
+            });
+        } else {
+            // If they are just single lines without large spaces, group every 2 lines as a verse
+            rawLines.forEach((line, index) => {
+                processedText += line + '\n';
+                if (index % 2 === 1 && index !== rawLines.length - 1) {
+                    processedText += '\n'; // Elegant empty line between verses
+                }
+            });
+        }
+        processedText = processedText.trim();
         
         // Editor Panel
         const editorPanel = document.createElement('div');
@@ -351,7 +374,7 @@
         editorPanel.innerHTML = `
             <h3 style="margin: 0; color: #fff; font-size: 18px; text-align: center; border-bottom: 1px solid #444; padding-bottom: 10px;">تنسيق اللوحة الشعرية</h3>
             <p style="color: #aaa; font-size: 13px; margin: 0; line-height: 1.5; text-align: center;">
-                تأكد من أن كل شطر في سطر مستقل، واترك سطراً فارغاً بين كل بيت وآخر للحصول على مظهر أنيق.
+                يمكنك تعديل النص وتنسيقه كما سيظهر في اللوحة الفنية.
             </p>
             <textarea id="quote-text-input" rows="10" style="
                 width: 100%; background: rgba(0,0,0,0.2); color: #fff; 
@@ -401,7 +424,7 @@
         // State
         let currentText = processedText;
         let fontSize = 65;
-        let lineSpacing = 50; 
+        let lineSpacing = 40; 
         let padding = 150; 
 
         const textarea = document.getElementById('quote-text-input');
@@ -445,15 +468,21 @@
         ctx.font = `${fontSize}px "Arabic Poetry", serif`;
         
         let maxLineWidth = 0;
+        let totalTextHeight = 0;
+        let lineHeight = fontSize + lineSpacing;
+        let verseGap = 70; // Elegant gap between verses
+        
         lines.forEach(line => {
-            let w = ctx.measureText(line).width;
-            if (w > maxLineWidth) maxLineWidth = w;
+            if (line === '') {
+                totalTextHeight += verseGap;
+            } else {
+                let w = ctx.measureText(line).width;
+                if (w > maxLineWidth) maxLineWidth = w;
+                totalTextHeight += lineHeight;
+            }
         });
         
         // 2. Set dynamic canvas dimensions
-        let lineHeight = fontSize + lineSpacing;
-        let totalTextHeight = lines.length * lineHeight;
-        
         // Elegant proportions: square or tall rectangle
         canvas.width = Math.max(1080, maxLineWidth + 300); // 150px margin on each side
         canvas.height = Math.max(1080, totalTextHeight + (padding * 2) + 200);
@@ -503,21 +532,25 @@
         let startY = (canvas.height - totalTextHeight) / 2 + (lineHeight / 2);
         
         ctx.fillText(ornament, canvas.width / 2, startY - 80);
-        ctx.fillText(ornament, canvas.width / 2, startY + totalTextHeight + 40);
+        ctx.fillText(ornament, canvas.width / 2, startY + totalTextHeight - (lineHeight / 2) + 40);
 
         // Draw Poetry Text
         ctx.font = `${fontSize}px "Arabic Poetry", serif`;
+        let currentY = startY;
         
-        lines.forEach((line, index) => {
-            let y = startY + (index * lineHeight);
-            
-            // Subtle shadow
-            ctx.shadowColor = 'rgba(0,0,0,0.5)';
-            ctx.shadowBlur = 4;
-            ctx.shadowOffsetX = 0;
-            ctx.shadowOffsetY = 2;
-            
-            ctx.fillText(line, canvas.width / 2, y);
+        lines.forEach((line) => {
+            if (line === '') {
+                currentY += verseGap;
+            } else {
+                // Subtle shadow
+                ctx.shadowColor = 'rgba(0,0,0,0.5)';
+                ctx.shadowBlur = 4;
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 2;
+                
+                ctx.fillText(line, canvas.width / 2, currentY);
+                currentY += lineHeight;
+            }
         });
 
         // Reset shadow
