@@ -461,16 +461,18 @@
     function drawQuote(canvas, text, fontSize, lineSpacing, padding) {
         const ctx = canvas.getContext('2d');
         
-        // Preserve empty lines by not filtering them out entirely, but splitting by \n
+        // Clean canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
         let lines = text.split('\n').map(l => l.trim());
         
-        // 1. Initial font setup to measure text width
+        // MUST set font BEFORE measuring text!
         ctx.font = `${fontSize}px "Arabic Poetry", serif`;
         
         let maxLineWidth = 0;
         let totalTextHeight = 0;
         let lineHeight = fontSize + lineSpacing;
-        let verseGap = 50; // Elegant, moderate gap between verses
+        let verseGap = fontSize * 0.4; // Scales with font size
         
         lines.forEach(line => {
             if (line === '') {
@@ -483,9 +485,8 @@
         });
         
         // 2. Set dynamic canvas dimensions
-        // Elegant proportions wrapping exactly the text
-        canvas.width = maxLineWidth + 300; // 150px margin on each side
-        canvas.height = totalTextHeight + 380; // Tighter vertical padding since watermark is removed
+        canvas.width = maxLineWidth + 300;
+        canvas.height = totalTextHeight + 380;
 
         // 3. Re-apply context styles after changing dimensions
         ctx.font = `${fontSize}px "Arabic Poetry", serif`;
@@ -537,9 +538,10 @@
         // Draw Poetry Text
         ctx.font = `${fontSize}px "Arabic Poetry", serif`;
         
-        // We subtract 50px to compensate for the font's massive internal top padding
-        // This visually balances the top and bottom gaps
-        let startY = (canvas.height - totalTextHeight) / 2 + (lineHeight / 2) - 50;
+        // We subtract a proportional amount to compensate for the font's internal top padding
+        // This visually balances the top and bottom gaps at any font size
+        let visualOffset = fontSize * 0.4;
+        let startY = (canvas.height - totalTextHeight) / 2 + (lineHeight / 2) - visualOffset;
         let currentY = startY;
         
         lines.forEach((line) => {
