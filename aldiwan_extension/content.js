@@ -593,8 +593,27 @@
             let scale = Math.max(canvas.width / backgroundImage.width, canvas.height / backgroundImage.height) * (bgZoom / 100);
             let w = backgroundImage.width * scale;
             let h = backgroundImage.height * scale;
-            let x = (canvas.width / 2) - (w / 2) + bgPanX;
-            let y = (canvas.height / 2) - (h / 2) + bgPanY;
+            
+            // Calculate absolute maximum pan distances
+            let maxPanX = Math.max(0, (w - canvas.width) / 2);
+            let maxPanY = Math.max(0, (h - canvas.height) / 2);
+            
+            // Clamp the pan values so we never expose the canvas background
+            let clampedPanX = Math.max(-maxPanX, Math.min(maxPanX, bgPanX));
+            let clampedPanY = Math.max(-maxPanY, Math.min(maxPanY, bgPanY));
+            
+            // Update the UI sliders dynamically so they feel native and bounded
+            const sliderX = document.getElementById('quote-bg-x');
+            const sliderY = document.getElementById('quote-bg-y');
+            if (sliderX && sliderY) {
+                sliderX.min = -Math.ceil(maxPanX);
+                sliderX.max = Math.ceil(maxPanX);
+                sliderY.min = -Math.ceil(maxPanY);
+                sliderY.max = Math.ceil(maxPanY);
+            }
+            
+            let x = (canvas.width / 2) - (w / 2) + clampedPanX;
+            let y = (canvas.height / 2) - (h / 2) + clampedPanY;
             
             if (bgBlur > 0) {
                 ctx.filter = `blur(${bgBlur}px)`;
