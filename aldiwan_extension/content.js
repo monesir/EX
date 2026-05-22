@@ -335,7 +335,7 @@
             backdrop-filter: blur(5px);
         `;
 
-        // Attempt to auto-split halves if they are separated by a wide gap (tabs or multiple spaces)
+        // Replace large spaces or tabs with newlines so each half-line is on its own line
         let processedText = initialText.replace(/\t/g, '\n').replace(/ {2,}/g, '\n');
         
         // Editor Panel
@@ -344,17 +344,20 @@
             background: var(--bg-card, #2f2824); padding: 20px; border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             display: flex; flex-direction: column; gap: 15px;
-            width: 350px; border: 1px solid var(--border-main, #3e3833);
+            width: 380px; border: 1px solid var(--border-main, #3e3833);
             direction: rtl; font-family: Tahoma, Arial, sans-serif;
         `;
         
         editorPanel.innerHTML = `
-            <h3 style="margin: 0; color: #fff; font-size: 18px; text-align: center; border-bottom: 1px solid #444; padding-bottom: 10px;">تعديل الاقتباس</h3>
-            <textarea id="quote-text-input" rows="8" style="
+            <h3 style="margin: 0; color: #fff; font-size: 18px; text-align: center; border-bottom: 1px solid #444; padding-bottom: 10px;">تنسيق اللوحة الشعرية</h3>
+            <p style="color: #aaa; font-size: 13px; margin: 0; line-height: 1.5; text-align: center;">
+                تأكد من أن كل شطر في سطر مستقل، واترك سطراً فارغاً بين كل بيت وآخر للحصول على مظهر أنيق.
+            </p>
+            <textarea id="quote-text-input" rows="10" style="
                 width: 100%; background: rgba(0,0,0,0.2); color: #fff; 
                 border: 1px solid #555; border-radius: 8px; padding: 10px; 
                 font-family: 'Arabic Poetry', serif; font-size: 18px; resize: vertical;
-                box-sizing: border-box;
+                box-sizing: border-box; text-align: center; white-space: pre-wrap;
             "></textarea>
             <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px;">
                 <span style="color: #ccc; font-size: 14px;">حجم الخط</span>
@@ -371,7 +374,7 @@
                 </div>
             </div>
             <div style="display: flex; gap: 10px; margin-top: 10px;">
-                <button id="quote-download-btn" style="flex: 1; padding: 12px; background: #d4af37; color: #000; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 15px; transition: 0.2s;">تحميل الصورة</button>
+                <button id="quote-download-btn" style="flex: 1; padding: 12px; background: #dcb98a; color: #000; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 15px; transition: 0.2s;">تحميل الصورة</button>
                 <button id="quote-close-btn" style="flex: 1; padding: 12px; background: transparent; color: #fff; border: 1px solid #777; border-radius: 6px; cursor: pointer; font-size: 15px; transition: 0.2s;">إلغاء</button>
             </div>
         `;
@@ -383,8 +386,6 @@
         `;
 
         const canvas = document.createElement('canvas');
-        canvas.width = 1080;
-        canvas.height = 1080; // Default square, but we will resize it dynamically based on content
         canvas.style.maxWidth = 'min(500px, 90vw)';
         canvas.style.maxHeight = '90vh';
         canvas.style.borderRadius = '8px';
@@ -400,8 +401,8 @@
         // State
         let currentText = processedText;
         let fontSize = 65;
-        let lineSpacing = 60; // Extra spacing between lines
-        let padding = 100; // Padding around text
+        let lineSpacing = 50; 
+        let padding = 150; 
 
         const textarea = document.getElementById('quote-text-input');
         textarea.value = currentText;
@@ -425,8 +426,8 @@
             link.click();
         };
 
-        document.getElementById('quote-download-btn').onmouseover = (e) => e.target.style.background = '#e5c158';
-        document.getElementById('quote-download-btn').onmouseout = (e) => e.target.style.background = '#d4af37';
+        document.getElementById('quote-download-btn').onmouseover = (e) => e.target.style.background = '#eaddb8';
+        document.getElementById('quote-download-btn').onmouseout = (e) => e.target.style.background = '#dcb98a';
 
         document.getElementById('quote-close-btn').onclick = () => modal.remove();
 
@@ -437,65 +438,96 @@
     function drawQuote(canvas, text, fontSize, lineSpacing, padding) {
         const ctx = canvas.getContext('2d');
         
-        // Split exact newlines entered by user
-        let lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+        // Preserve empty lines by not filtering them out entirely, but splitting by \n
+        let lines = text.split('\n').map(l => l.trim());
         
-        // Calculate required height based on lines and font size
+        // 1. Initial font setup to measure text width
+        ctx.font = `${fontSize}px "Arabic Poetry", serif`;
+        
+        let maxLineWidth = 0;
+        lines.forEach(line => {
+            let w = ctx.measureText(line).width;
+            if (w > maxLineWidth) maxLineWidth = w;
+        });
+        
+        // 2. Set dynamic canvas dimensions
         let lineHeight = fontSize + lineSpacing;
         let totalTextHeight = lines.length * lineHeight;
         
-        // Set canvas dimensions dynamically (minimum 1080x1080 for square look, but expand if needed)
-        canvas.width = 1080;
-        canvas.height = Math.max(1080, totalTextHeight + (padding * 2) + 150); // 150 for watermark/borders
+        // Elegant proportions: square or tall rectangle
+        canvas.width = Math.max(1080, maxLineWidth + 300); // 150px margin on each side
+        canvas.height = Math.max(1080, totalTextHeight + (padding * 2) + 200);
 
-        // Draw elegant dark background
-        ctx.fillStyle = '#111317'; // Very dark, professional grey-blue
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        // Draw subtle pattern or gradient overlay
-        const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-        grad.addColorStop(0, 'rgba(30, 35, 45, 0.5)'); 
-        grad.addColorStop(1, 'rgba(10, 12, 15, 0.8)'); 
-        ctx.fillStyle = grad;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        // Draw elegant double border
-        ctx.strokeStyle = '#d4af37'; // Gold
-        ctx.lineWidth = 2;
-        ctx.strokeRect(40, 40, canvas.width - 80, canvas.height - 80);
-        
-        ctx.strokeStyle = 'rgba(212, 175, 55, 0.3)'; // Faded Gold
-        ctx.lineWidth = 1;
-        ctx.strokeRect(50, 50, canvas.width - 100, canvas.height - 100);
-
-        // Configure text
-        ctx.fillStyle = '#ffffff';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
+        // 3. Re-apply context styles after changing dimensions
+        ctx.font = `${fontSize}px "Arabic Poetry", serif`;
         ctx.direction = 'rtl';
+        ctx.textBaseline = 'middle';
+        ctx.textAlign = 'center';
+
+        // Draw background (Solid dark warm gray)
+        ctx.fillStyle = '#161514';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Draw elegant thin border
+        ctx.strokeStyle = '#3d362e';
+        ctx.lineWidth = 2;
+        
+        // Manual rounded rect (for broader compatibility or use standard if available)
+        const margin = 40;
+        const radius = 20;
+        const w = canvas.width - (margin * 2);
+        const h = canvas.height - (margin * 2);
+        
+        ctx.beginPath();
+        ctx.moveTo(margin + radius, margin);
+        ctx.lineTo(margin + w - radius, margin);
+        ctx.quadraticCurveTo(margin + w, margin, margin + w, margin + radius);
+        ctx.lineTo(margin + w, margin + h - radius);
+        ctx.quadraticCurveTo(margin + w, margin + h, margin + w - radius, margin + h);
+        ctx.lineTo(margin + radius, margin + h);
+        ctx.quadraticCurveTo(margin, margin + h, margin, margin + h - radius);
+        ctx.lineTo(margin, margin + radius);
+        ctx.quadraticCurveTo(margin, margin, margin + radius, margin);
+        ctx.closePath();
+        ctx.stroke();
+
+        // Setup Text Gradient for Soft Gold
+        const textGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        textGrad.addColorStop(0, '#ebd197');
+        textGrad.addColorStop(1, '#c49c66');
+        ctx.fillStyle = textGrad;
+
+        // Draw Ornaments
+        const ornament = '❈ ❖ ❈';
+        ctx.font = '24px Arial, sans-serif';
+        let startY = (canvas.height - totalTextHeight) / 2 + (lineHeight / 2);
+        
+        ctx.fillText(ornament, canvas.width / 2, startY - 80);
+        ctx.fillText(ornament, canvas.width / 2, startY + totalTextHeight + 40);
+
+        // Draw Poetry Text
         ctx.font = `${fontSize}px "Arabic Poetry", serif`;
         
-        // Draw text vertically centered
-        let startY = (canvas.height - totalTextHeight) / 2 + (lineHeight / 2) - 30;
-
         lines.forEach((line, index) => {
-            // Shadow for text depth
-            ctx.shadowColor = 'rgba(0,0,0,0.8)';
-            ctx.shadowBlur = 10;
-            ctx.shadowOffsetX = 0;
-            ctx.shadowOffsetY = 4;
+            let y = startY + (index * lineHeight);
             
-            ctx.fillText(line, canvas.width / 2, startY + (index * lineHeight));
+            // Subtle shadow
+            ctx.shadowColor = 'rgba(0,0,0,0.5)';
+            ctx.shadowBlur = 4;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 2;
+            
+            ctx.fillText(line, canvas.width / 2, y);
         });
 
-        // Reset shadow for watermark
+        // Reset shadow
         ctx.shadowBlur = 0;
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
 
-        // Draw watermark at bottom
-        ctx.font = '28px Tahoma, sans-serif';
-        ctx.fillStyle = 'rgba(255,255,255,0.3)';
-        ctx.fillText('aldiwan.net - موسوعة الديوان', canvas.width / 2, canvas.height - 75);
+        // Draw watermark
+        ctx.font = '22px Tahoma, sans-serif';
+        ctx.fillStyle = 'rgba(219, 185, 138, 0.4)';
+        ctx.fillText('aldiwan.net', canvas.width / 2, canvas.height - 75);
     }
 })();
