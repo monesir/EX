@@ -392,25 +392,37 @@
         copyItem.onclick = (e) => {
             e.stopPropagation();
             
-            // Format poetry before copying using the same logic as the quote card
-            let lines = text.split('\n').map(l => l.trim());
+            // Format poetry before copying using smart detection
+            let lines = text.split('\n').map(l => l.trim()).filter(l => l !== '');
             let formattedLines = [];
-            let currentVerse = [];
-
-            for (let i = 0; i < lines.length; i++) {
-                let line = lines[i];
-                if (line === "") {
-                    if (currentVerse.length > 0) {
-                        // Join shatrs of the same verse with 4 spaces
-                        formattedLines.push(currentVerse.join("    "));
-                        currentVerse = [];
+            let bet1Nodes = document.querySelectorAll('.bet-1');
+            
+            if (bet1Nodes.length > 0) {
+                let bet1Texts = Array.from(bet1Nodes).map(n => n.innerText.trim());
+                let currentVerse = [];
+                for (let i = 0; i < lines.length; i++) {
+                    let line = lines[i];
+                    
+                    if (bet1Texts.includes(line)) {
+                        if (currentVerse.length > 0) {
+                            formattedLines.push(currentVerse.join("    "));
+                            currentVerse = [];
+                        }
+                        currentVerse.push(line);
+                    } else {
+                        currentVerse.push(line);
+                        // Force push if it reaches 2 parts
+                        if (currentVerse.length === 2) {
+                            formattedLines.push(currentVerse.join("    "));
+                            currentVerse = [];
+                        }
                     }
-                } else {
-                    currentVerse.push(line);
                 }
-            }
-            if (currentVerse.length > 0) {
-                formattedLines.push(currentVerse.join("    "));
+                if (currentVerse.length > 0) {
+                    formattedLines.push(currentVerse.join("    "));
+                }
+            } else {
+                formattedLines = lines; // Free verse, just keep lines
             }
             
             navigator.clipboard.writeText(formattedLines.join('\n'));
