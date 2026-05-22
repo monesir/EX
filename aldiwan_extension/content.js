@@ -485,7 +485,7 @@
         // 2. Set dynamic canvas dimensions
         // Elegant proportions wrapping exactly the text
         canvas.width = maxLineWidth + 300; // 150px margin on each side
-        canvas.height = totalTextHeight + 500; // Enough space for padding and ornaments
+        canvas.height = totalTextHeight + 380; // Tighter vertical padding since watermark is removed
 
         // 3. Re-apply context styles after changing dimensions
         ctx.font = `${fontSize}px "Arabic Poetry", serif`;
@@ -531,12 +531,15 @@
         ctx.font = '48px Arial, sans-serif';
         
         // Position ornaments elegantly near the top and bottom borders, away from text
-        ctx.fillText(ornament, canvas.width / 2, 140);
-        ctx.fillText(ornament, canvas.width / 2, canvas.height - 160);
+        ctx.fillText(ornament, canvas.width / 2, 120);
+        ctx.fillText(ornament, canvas.width / 2, canvas.height - 120);
 
         // Draw Poetry Text
         ctx.font = `${fontSize}px "Arabic Poetry", serif`;
-        let startY = (canvas.height - totalTextHeight) / 2 + (lineHeight / 2);
+        
+        // We subtract 50px to compensate for the font's massive internal top padding
+        // This visually balances the top and bottom gaps
+        let startY = (canvas.height - totalTextHeight) / 2 + (lineHeight / 2) - 50;
         let currentY = startY;
         
         lines.forEach((line) => {
