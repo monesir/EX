@@ -396,6 +396,10 @@
                     <button id="quote-lh-plus" style="padding: 5px 15px; border-radius: 5px; border: none; background: #444; color: #fff; cursor: pointer; font-weight: bold;">+</button>
                 </div>
             </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px;">
+                <span style="color: #ccc; font-size: 14px;">لون الخط</span>
+                <input type="color" id="quote-text-color" value="#ebd197" style="border: none; border-radius: 4px; width: 65px; height: 35px; cursor: pointer; background: transparent;">
+            </div>
             
             <div id="quote-image-controls" style="display: none; flex-direction: column; gap: 10px; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px;">
                 <div style="color: #dcb98a; font-size: 13px; text-align: center; margin-bottom: 5px; font-weight: bold;">إعدادات الصورة</div>
@@ -460,6 +464,7 @@
         let bgZoom = 100;
         let bgPanX = 0;
         let bgPanY = 0;
+        let textColor = '#ebd197';
 
         const textarea = document.getElementById('quote-text-input');
         textarea.value = currentText;
@@ -476,7 +481,7 @@
                 document.getElementById('quote-bg-btn').style.display = 'block';
             }
             
-            drawQuote(canvas, currentText, fontSize, lineSpacing, padding, backgroundImage, bgDim, bgBlur, bgZoom, bgPanX, bgPanY);
+            drawQuote(canvas, currentText, fontSize, lineSpacing, padding, backgroundImage, bgDim, bgBlur, bgZoom, bgPanX, bgPanY, textColor);
         }
 
         textarea.addEventListener('input', updateCanvas);
@@ -485,6 +490,8 @@
         document.getElementById('quote-font-minus').onclick = () => { fontSize -= 5; updateCanvas(); };
         document.getElementById('quote-lh-plus').onclick = () => { lineSpacing += 10; updateCanvas(); };
         document.getElementById('quote-lh-minus').onclick = () => { lineSpacing -= 10; updateCanvas(); };
+
+        document.getElementById('quote-text-color').oninput = (e) => { textColor = e.target.value; updateCanvas(); };
 
         // Image Controls events
         document.getElementById('quote-bg-dim').oninput = (e) => { bgDim = parseInt(e.target.value); updateCanvas(); };
@@ -540,7 +547,7 @@
         updateCanvas();
     }
 
-    function drawQuote(canvas, text, fontSize, lineSpacing, padding, backgroundImage, bgDim, bgBlur, bgZoom, bgPanX, bgPanY) {
+    function drawQuote(canvas, text, fontSize, lineSpacing, padding, backgroundImage, bgDim, bgBlur, bgZoom, bgPanX, bgPanY, textColor) {
         const ctx = canvas.getContext('2d');
         
         // Clean canvas
@@ -628,11 +635,6 @@
             ctx.globalAlpha = 1.0;
         }
 
-        // Setup Text Gradient for Soft Gold
-        const textGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-        textGrad.addColorStop(0, '#ebd197');
-        textGrad.addColorStop(1, '#c49c66');
-
         // Global Shadow for readability over textured background images
         ctx.shadowColor = 'rgba(0,0,0,0.7)';
         ctx.shadowBlur = 6;
@@ -667,7 +669,15 @@
             drawRoundedRect(m2, m2, canvas.width - (m2 * 2), canvas.height - (m2 * 2), 11);
         }
 
-        ctx.fillStyle = textGrad;
+        if (textColor === '#ebd197') {
+            // Setup Text Gradient for Soft Gold if using default color
+            const textGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            textGrad.addColorStop(0, '#ebd197');
+            textGrad.addColorStop(1, '#c49c66');
+            ctx.fillStyle = textGrad;
+        } else {
+            ctx.fillStyle = textColor;
+        }
 
         // Draw Ornaments
         const ornament = '❈ ❖ ❈';
