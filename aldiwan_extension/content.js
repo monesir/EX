@@ -453,6 +453,7 @@
             
             if (hasPoetry) {
                 e.preventDefault(); // Cancel standard browser copy
+                e.stopImmediatePropagation(); // Prevent site scripts from overriding this
                 
                 let formattedLines = [];
                 let currentVerse = [];
@@ -481,7 +482,7 @@
                 e.clipboardData.setData('text/plain', formattedLines.join('\n\n'));
             }
         }
-    });
+    }, { capture: true });
 
     async function showQuoteModal(initialText) {
         const existing = document.getElementById('diwan-quote-modal');
