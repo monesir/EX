@@ -397,7 +397,9 @@
                 </div>
             </div>
             <div style="display: flex; gap: 10px; margin-top: 10px;">
-                <button id="quote-download-btn" style="flex: 1; padding: 12px; background: #dcb98a; color: #000; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 15px; transition: 0.2s;">تحميل الصورة</button>
+                <button id="quote-bg-btn" style="flex: 1; padding: 12px; background: transparent; color: #fff; border: 1px solid #777; border-radius: 6px; cursor: pointer; font-size: 15px; transition: 0.2s;">صورة خلفية</button>
+                <input type="file" id="quote-bg-input" accept="image/*" style="display: none;">
+                <button id="quote-download-btn" style="flex: 2; padding: 12px; background: #dcb98a; color: #000; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 15px; transition: 0.2s;">تحميل الصورة</button>
                 <button id="quote-close-btn" style="flex: 1; padding: 12px; background: transparent; color: #fff; border: 1px solid #777; border-radius: 6px; cursor: pointer; font-size: 15px; transition: 0.2s;">إلغاء</button>
             </div>
         `;
@@ -426,13 +428,14 @@
         let fontSize = 125;
         let lineSpacing = -30; 
         let padding = 150; 
+        let backgroundImage = null;
 
         const textarea = document.getElementById('quote-text-input');
         textarea.value = currentText;
 
         function updateCanvas() {
             currentText = textarea.value;
-            drawQuote(canvas, currentText, fontSize, lineSpacing, padding);
+            drawQuote(canvas, currentText, fontSize, lineSpacing, padding, backgroundImage);
         }
 
         textarea.addEventListener('input', updateCanvas);
@@ -441,6 +444,25 @@
         document.getElementById('quote-font-minus').onclick = () => { fontSize -= 5; updateCanvas(); };
         document.getElementById('quote-lh-plus').onclick = () => { lineSpacing += 10; updateCanvas(); };
         document.getElementById('quote-lh-minus').onclick = () => { lineSpacing -= 10; updateCanvas(); };
+
+        document.getElementById('quote-bg-btn').onclick = () => {
+            document.getElementById('quote-bg-input').click();
+        };
+
+        document.getElementById('quote-bg-input').onchange = (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const img = new Image();
+                img.onload = () => {
+                    backgroundImage = img;
+                    updateCanvas();
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        };
 
         document.getElementById('quote-download-btn').onclick = () => {
             const link = document.createElement('a');
@@ -458,7 +480,7 @@
         updateCanvas();
     }
 
-    function drawQuote(canvas, text, fontSize, lineSpacing, padding) {
+    function drawQuote(canvas, text, fontSize, lineSpacing, padding, backgroundImage) {
         const ctx = canvas.getContext('2d');
         
         // Clean canvas
@@ -506,6 +528,18 @@
         // Draw background (Solid dark warm gray)
         ctx.fillStyle = '#141311'; // Slightly darker for ultimate premium feel
         ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        if (backgroundImage) {
+            let scale = Math.max(canvas.width / backgroundImage.width, canvas.height / backgroundImage.height);
+            let w = backgroundImage.width * scale;
+            let h = backgroundImage.height * scale;
+            let x = (canvas.width / 2) - (w / 2);
+            let y = (canvas.height / 2) - (h / 2);
+            
+            ctx.globalAlpha = 0.35; // Subtle overlay so text is highly readable
+            ctx.drawImage(backgroundImage, x, y, w, h);
+            ctx.globalAlpha = 1.0;
+        }
 
         // Draw elegant double border
         ctx.strokeStyle = '#3d362e';
