@@ -1,3 +1,6 @@
+chrome.storage.local.get(['aldiwan_enabled'], (res) => {
+    if (res.aldiwan_enabled === false) return; // Disabled
+
 (function() {
     // List of Arabic fonts
     const fonts = [
@@ -839,3 +842,4 @@
         ctx.shadowOffsetY = 0;
     }
 })();
+});
