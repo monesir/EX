@@ -391,8 +391,33 @@
         copyItem.onmouseout = () => copyItem.style.background = 'transparent';
         copyItem.onclick = (e) => {
             e.stopPropagation();
-            navigator.clipboard.writeText(text);
-            customMenu.remove();
+            
+            // Format poetry before copying using the same logic as the quote card
+            let lines = text.split('\n').map(l => l.trim());
+            let formattedLines = [];
+            let currentVerse = [];
+
+            for (let i = 0; i < lines.length; i++) {
+                let line = lines[i];
+                if (line === "") {
+                    if (currentVerse.length > 0) {
+                        // Join shatrs of the same verse with 4 spaces
+                        formattedLines.push(currentVerse.join("    "));
+                        currentVerse = [];
+                    }
+                } else {
+                    currentVerse.push(line);
+                }
+            }
+            if (currentVerse.length > 0) {
+                formattedLines.push(currentVerse.join("    "));
+            }
+            
+            navigator.clipboard.writeText(formattedLines.join('\n'));
+            
+            // Feedback
+            copyItem.innerHTML = '<i class="fas fa-check" style="margin-left: 8px; color: #ebd197;"></i> تم النسخ بذكاء!';
+            setTimeout(() => { customMenu.remove(); }, 1200);
         };
 
         customMenu.appendChild(quoteItem);
