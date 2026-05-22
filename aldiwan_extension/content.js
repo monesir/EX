@@ -405,7 +405,7 @@
                     
                     if (bet1Texts.includes(line)) {
                         if (currentVerse.length > 0) {
-                            formattedLines.push(currentVerse.join("    "));
+                            formattedLines.push(currentVerse.join("    \n"));
                             currentVerse = [];
                         }
                         currentVerse.push(line);
@@ -413,19 +413,19 @@
                         currentVerse.push(line);
                         // Force push if it reaches 2 parts
                         if (currentVerse.length === 2) {
-                            formattedLines.push(currentVerse.join("    "));
+                            formattedLines.push(currentVerse.join("    \n"));
                             currentVerse = [];
                         }
                     }
                 }
                 if (currentVerse.length > 0) {
-                    formattedLines.push(currentVerse.join("    "));
+                    formattedLines.push(currentVerse.join("    \n"));
                 }
             } else {
                 formattedLines = lines; // Free verse, just keep lines
             }
             
-            navigator.clipboard.writeText(formattedLines.join('\n'));
+            navigator.clipboard.writeText(formattedLines.join('\n\n'));
             
             // Feedback
             copyItem.innerHTML = '<i class="fas fa-check" style="margin-left: 8px; color: #ebd197;"></i> تم النسخ بذكاء!';
