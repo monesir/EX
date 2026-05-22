@@ -2,7 +2,7 @@
     // List of Arabic fonts
     const fonts = [
         { family: "", name: "الخط الافتراضي", baseSize: 1.25, lhMult: 1.6, margin: "" },
-        { family: "'Arabic Poetry', serif", name: "عام الشعر العربي", baseSize: 2.5, lhMult: 1.0, margin: "margin: 0.5rem 0 !important;" },
+        { family: "'Arabic Poetry', serif", name: "عام الشعر العربي", baseSize: 2.5, lhMult: 1.15, margin: "margin: 0.9rem 0 !important;" },
         { family: "'Aref Ruqaa', serif", name: "خط الرقعه", baseSize: 1.4, lhMult: 1.6, margin: "" }
     ];
     let currentFontIndex = 0; // Default to site default
