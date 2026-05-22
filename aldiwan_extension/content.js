@@ -573,10 +573,16 @@
         textGrad.addColorStop(1, '#c49c66');
         ctx.fillStyle = textGrad;
 
+        // Global Shadow for readability over textured background images
+        ctx.shadowColor = 'rgba(0,0,0,0.7)';
+        ctx.shadowBlur = 6;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 3;
+
         // Draw Ornaments
         const ornament = '❈ ❖ ❈';
         let ornamentFontSize = Math.max(24, fontSize * 0.4);
-        ctx.font = `${ornamentFontSize}px Arial, sans-serif`;
+        ctx.font = `bold ${ornamentFontSize}px Arial, sans-serif`;
         
         let visualTop = visualTopEmptySpace;
         let visualBottom = visualTop + visualHeight;
@@ -597,12 +603,6 @@
             if (line === '') {
                 currentY += verseGap;
             } else {
-                // Subtle shadow
-                ctx.shadowColor = 'rgba(0,0,0,0.5)';
-                ctx.shadowBlur = 4;
-                ctx.shadowOffsetX = 0;
-                ctx.shadowOffsetY = 2;
-                
                 ctx.fillText(line, canvas.width / 2, currentY);
                 currentY += lineHeight;
             }
