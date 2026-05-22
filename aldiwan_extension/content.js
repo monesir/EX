@@ -438,7 +438,7 @@
     }
 
     // Intercept native Ctrl+C or right-click -> copy to apply our smart poetry formatting
-    document.addEventListener('copy', (e) => {
+    window.addEventListener('copy', (e) => {
         let sel = window.getSelection();
         if (!sel.rangeCount || sel.isCollapsed) return;
         
@@ -480,6 +480,14 @@
                 
                 // Write our formatted text to the clipboard
                 e.clipboardData.setData('text/plain', formattedLines.join('\n\n'));
+                
+                // Show a tiny toast notification to confirm it worked
+                let toast = document.createElement('div');
+                toast.innerHTML = '<i class="fas fa-check" style="margin-left: 8px;"></i> تم النسخ بذكاء!';
+                toast.style.cssText = 'position: fixed; bottom: 20px; left: 20px; background: #ebd197; color: #000; padding: 10px 20px; border-radius: 5px; z-index: 999999; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: opacity 0.5s; font-family: "Arabic Poetry", Arial, sans-serif;';
+                document.body.appendChild(toast);
+                setTimeout(() => toast.style.opacity = '0', 1500);
+                setTimeout(() => toast.remove(), 2000);
             }
         }
     }, { capture: true });
