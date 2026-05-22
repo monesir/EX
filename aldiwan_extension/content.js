@@ -400,6 +400,10 @@
                 <span style="color: #ccc; font-size: 14px;">لون الخط</span>
                 <input type="color" id="quote-text-color" value="#ebd197" style="border: none; border-radius: 4px; width: 65px; height: 35px; cursor: pointer; background: transparent;">
             </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px;">
+                <span style="color: #ccc; font-size: 14px;">إظهار الزخارف</span>
+                <input type="checkbox" id="quote-show-ornaments" checked style="width: 20px; height: 20px; cursor: pointer;">
+            </div>
             
             <div id="quote-image-controls" style="display: none; flex-direction: column; gap: 10px; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px;">
                 <div style="color: #dcb98a; font-size: 13px; text-align: center; margin-bottom: 5px; font-weight: bold;">إعدادات الصورة</div>
@@ -465,6 +469,7 @@
         let bgPanX = 0;
         let bgPanY = 0;
         let textColor = '#ebd197';
+        let showOrnaments = true;
 
         const textarea = document.getElementById('quote-text-input');
         textarea.value = currentText;
@@ -481,7 +486,7 @@
                 document.getElementById('quote-bg-btn').style.display = 'block';
             }
             
-            drawQuote(canvas, currentText, fontSize, lineSpacing, padding, backgroundImage, bgDim, bgBlur, bgZoom, bgPanX, bgPanY, textColor);
+            drawQuote(canvas, currentText, fontSize, lineSpacing, padding, backgroundImage, bgDim, bgBlur, bgZoom, bgPanX, bgPanY, textColor, showOrnaments);
         }
 
         textarea.addEventListener('input', updateCanvas);
@@ -492,6 +497,7 @@
         document.getElementById('quote-lh-minus').onclick = () => { lineSpacing -= 10; updateCanvas(); };
 
         document.getElementById('quote-text-color').oninput = (e) => { textColor = e.target.value; updateCanvas(); };
+        document.getElementById('quote-show-ornaments').onchange = (e) => { showOrnaments = e.target.checked; updateCanvas(); };
 
         // Image Controls events
         document.getElementById('quote-bg-dim').oninput = (e) => { bgDim = parseInt(e.target.value); updateCanvas(); };
@@ -547,7 +553,7 @@
         updateCanvas();
     }
 
-    function drawQuote(canvas, text, fontSize, lineSpacing, padding, backgroundImage, bgDim, bgBlur, bgZoom, bgPanX, bgPanY, textColor) {
+    function drawQuote(canvas, text, fontSize, lineSpacing, padding, backgroundImage, bgDim, bgBlur, bgZoom, bgPanX, bgPanY, textColor, showOrnaments) {
         const ctx = canvas.getContext('2d');
         
         // Clean canvas
@@ -579,7 +585,7 @@
         let ornamentGap = fontSize * 0.9; // Perfect elegant gap
         let m1 = 20; // Outer border margin
         let m2 = 28; // Inner border margin
-        let visualTopEmptySpace = m1 + (ornamentGap * 2); // Exact symmetric space
+        let visualTopEmptySpace = showOrnaments ? m1 + (ornamentGap * 2) : m1 + (ornamentGap * 1.5);
 
         // 2. Set dynamic canvas dimensions
         // Canvas width uses a perfect golden ratio padding (approx 4.5x font size total)
@@ -680,16 +686,18 @@
         }
 
         // Draw Ornaments
-        const ornament = '❈ ❖ ❈';
-        let ornamentFontSize = Math.max(24, fontSize * 0.4);
-        ctx.font = `bold ${ornamentFontSize}px Arial, sans-serif`;
-        
-        let visualTop = visualTopEmptySpace;
-        let visualBottom = visualTop + visualHeight;
-        
-        // Position ornaments exactly symmetric relative to the visual text block
-        ctx.fillText(ornament, canvas.width / 2, visualTop - ornamentGap);
-        ctx.fillText(ornament, canvas.width / 2, visualBottom + ornamentGap);
+        if (showOrnaments) {
+            const ornament = '❈ ❖ ❈';
+            let ornamentFontSize = Math.max(24, fontSize * 0.4);
+            ctx.font = `bold ${ornamentFontSize}px Arial, sans-serif`;
+            
+            let visualTop = visualTopEmptySpace;
+            let visualBottom = visualTop + visualHeight;
+            
+            // Position ornaments exactly symmetric relative to the visual text block
+            ctx.fillText(ornament, canvas.width / 2, visualTop - ornamentGap);
+            ctx.fillText(ornament, canvas.width / 2, visualBottom + ornamentGap);
+        }
 
         // Draw Poetry Text
         ctx.font = `${fontSize}px "Arabic Poetry", serif`;
