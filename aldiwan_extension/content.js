@@ -1,9 +1,9 @@
 (function() {
     // List of Arabic fonts
     const fonts = [
-        { family: "", name: "الخط الافتراضي", baseSize: 1.25 },
-        { family: "'Arabic Poetry', serif", name: "عام الشعر العربي", baseSize: 2.5 },
-        { family: "'Aref Ruqaa', serif", name: "خط الرقعه", baseSize: 1.4 }
+        { family: "", name: "الخط الافتراضي", baseSize: 1.25, lhMult: 1.6 },
+        { family: "'Arabic Poetry', serif", name: "عام الشعر العربي", baseSize: 2.5, lhMult: 1.35 },
+        { family: "'Aref Ruqaa', serif", name: "خط الرقعه", baseSize: 1.4, lhMult: 1.6 }
     ];
     let currentFontIndex = 0; // Default to site default
 
@@ -130,8 +130,9 @@
         
         if (currentFontIndex !== 0 || userFontSizeOffset !== 0) {
             let finalSize = fonts[currentFontIndex].baseSize + userFontSizeOffset;
+            let lhMult = fonts[currentFontIndex].lhMult || 1.6;
             sizeRule = `font-size: ${finalSize}rem !important;`;
-            lhRule = `line-height: ${finalSize * 1.6}rem !important;`;
+            lhRule = `line-height: ${finalSize * lhMult}rem !important;`;
         }
 
         dynamicStyle.textContent = `
