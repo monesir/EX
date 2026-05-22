@@ -528,7 +528,7 @@
 
         // Draw Ornaments
         const ornament = '❈ ❖ ❈';
-        ctx.font = '24px Arial, sans-serif';
+        ctx.font = '48px Arial, sans-serif';
         
         // Position ornaments elegantly near the top and bottom borders, away from text
         ctx.fillText(ornament, canvas.width / 2, 140);
@@ -558,10 +558,5 @@
         ctx.shadowBlur = 0;
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
-
-        // Draw watermark
-        ctx.font = '22px Tahoma, sans-serif';
-        ctx.fillStyle = 'rgba(219, 185, 138, 0.4)';
-        ctx.fillText('aldiwan.net', canvas.width / 2, canvas.height - 75);
     }
 })();
